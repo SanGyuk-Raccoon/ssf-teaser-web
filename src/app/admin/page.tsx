@@ -140,8 +140,8 @@ export default function AdminPage() {
                 const count = data.votes[team.id] || 0;
                 const pct = total > 0 ? Math.round((count / total) * 100) : 0;
                 return (
-                  <div key={team.id} className="flex items-center gap-3">
-                    <span className="text-sm w-28 shrink-0">{team.club}</span>
+                  <div key={team.id} className="flex items-center gap-2">
+                    <span className="text-sm w-20 sm:w-28 shrink-0 truncate">{team.club}</span>
                     <div className="flex-1 h-6 bg-zinc-800 rounded overflow-hidden">
                       <div
                         className={`h-full rounded transition-all ${
@@ -150,7 +150,7 @@ export default function AdminPage() {
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <span className="text-sm text-zinc-400 w-20 text-right">
+                    <span className="text-sm text-zinc-400 w-16 sm:w-20 text-right shrink-0">
                       {count}표 ({pct}%)
                     </span>
                   </div>
