@@ -44,34 +44,45 @@ export default function VotePage() {
   };
 
   if (!data) {
-    return <div className="text-center text-zinc-500 py-20">로딩 중...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0", color: "var(--ink-muted)", fontFamily: "var(--font-display)", fontSize: "1.3rem" }}>
+        로딩 중...
+      </div>
+    );
   }
 
   const tierTeams = teams.filter((t) => t.tier === activeTier).sort((a, b) => a.order - b.order);
   const isOpen = data.status[activeTier] ?? false;
   const voted = hasVoted(activeTier);
   const votedTeamId = getVotedTeam(activeTier);
-
   const totalVotes = tierTeams.reduce((sum, t) => sum + (data.votes[t.id] || 0), 0);
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold">투표</h1>
-        <p className="text-zinc-400 text-sm">카테고리별 최고의 팀에 투표하세요</p>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
+
+      {/* Page heading */}
+      <div style={{ textAlign: "center" }}>
+        <h1 className="section-heading">투표</h1>
+        <p style={{ color: "var(--ink-muted)", fontSize: "0.875rem", marginTop: "6px" }}>
+          카테고리별 최고의 팀에 투표하세요
+        </p>
       </div>
 
       {/* Tier tabs */}
-      <div className="flex gap-2 justify-center">
+      <div style={{ display: "flex", gap: "8px", justifyContent: "center", flexWrap: "wrap" }}>
         {TIERS.map((tier) => (
           <button
             key={tier}
             onClick={() => setActiveTier(tier)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTier === tier
-                ? "bg-rose-600 text-white"
-                : "bg-zinc-900 text-zinc-400 hover:text-white"
-            }`}
+            className="btn-sketch"
+            style={{
+              padding: "8px 18px",
+              fontSize: "0.875rem",
+              background: activeTier === tier ? "var(--ink)" : "var(--cream)",
+              color: activeTier === tier ? "var(--cream)" : "var(--ink)",
+              boxShadow: activeTier === tier ? "none" : "var(--sketch-shadow)",
+              transform: activeTier === tier ? "translate(2px, 2px)" : "none",
+            }}
           >
             {tier}
           </button>
@@ -79,66 +90,126 @@ export default function VotePage() {
       </div>
 
       {/* Status badge */}
-      <div className="text-center">
+      <div style={{ textAlign: "center" }}>
         {isOpen ? (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "6px 16px",
+              background: "#dcfce7",
+              border: "2px solid #16a34a",
+              borderRadius: "9999px",
+              color: "#15803d",
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            <span className="pulse-dot" />
             투표 진행 중
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-800 text-zinc-500 text-sm">
-            <span className="w-2 h-2 rounded-full bg-zinc-500" />
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "6px 16px",
+              background: "var(--cream-dark)",
+              border: "2px solid var(--ink-muted)",
+              borderRadius: "9999px",
+              color: "var(--ink-muted)",
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            <span
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "var(--ink-muted)",
+                display: "inline-block",
+              }}
+            />
             투표 준비 중
           </span>
         )}
       </div>
 
       {/* Team cards */}
-      <div className="space-y-3">
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {tierTeams.map((team) => {
           const count = data.votes[team.id] || 0;
           const pct = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
           const isVotedTeam = votedTeamId === team.id;
+          const canVote = isOpen && !voted && !voting;
 
           return (
             <button
               key={team.id}
               onClick={() => handleVote(team.id)}
-              disabled={!isOpen || voted || voting}
-              className={`w-full text-left p-4 rounded-xl border transition-all ${
-                isVotedTeam
-                  ? "border-rose-500 bg-rose-500/10"
-                  : "border-zinc-800 bg-zinc-900 hover:border-zinc-700"
-              } ${!isOpen || voted ? "cursor-default" : "cursor-pointer"}`}
+              disabled={!canVote}
+              style={{
+                width: "100%",
+                textAlign: "left",
+                padding: "14px 16px",
+                borderRadius: "12px",
+                border: isVotedTeam ? "2.5px solid var(--rainbow-red)" : "2.5px solid var(--ink)",
+                background: isVotedTeam ? "#fff8f0" : "#fff",
+                boxShadow: isVotedTeam ? "4px 4px 0 var(--rainbow-red)" : "3px 3px 0 var(--ink)",
+                cursor: canVote ? "pointer" : "default",
+                transition: "box-shadow 0.12s ease, transform 0.12s ease",
+                fontFamily: "var(--font-body)",
+              }}
             >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      team.club === "Starwars"
-                        ? "bg-blue-500/20 text-blue-400"
-                        : "bg-purple-500/20 text-purple-400"
-                    }`}
-                  >
+              {/* Card header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: (voted || !isOpen) && totalVotes > 0 ? "10px" : "0",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                  <span className={team.club === "Starwars" ? "badge-starwars" : "badge-spectrum"}>
                     {team.club}
                   </span>
-                  <span className="font-semibold">{team.name}</span>
+                  <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--ink)" }}>
+                    {team.name}
+                  </span>
                   {isVotedTeam && (
-                    <span className="text-xs text-rose-400">✓ 투표완료</span>
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        color: "var(--rainbow-red)",
+                        background: "#fff0ee",
+                        border: "1.5px solid var(--rainbow-red)",
+                        borderRadius: "6px",
+                        padding: "1px 7px",
+                      }}
+                    >
+                      ✓ 투표완료
+                    </span>
                   )}
                 </div>
                 {(voted || !isOpen) && (
-                  <span className="text-sm text-zinc-400">
+                  <span style={{ fontSize: "0.875rem", color: "var(--ink-muted)", fontWeight: 600, whiteSpace: "nowrap", marginLeft: "8px" }}>
                     {count}표 ({pct}%)
                   </span>
                 )}
               </div>
+
+              {/* Progress bar */}
               {(voted || !isOpen) && totalVotes > 0 && (
-                <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                <div className="progress-track">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${
-                      isVotedTeam ? "bg-rose-500" : "bg-zinc-600"
-                    }`}
+                    className={`progress-fill ${isVotedTeam ? "progress-fill-voted" : "progress-fill-default"}`}
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -149,7 +220,14 @@ export default function VotePage() {
       </div>
 
       {totalVotes > 0 && (
-        <p className="text-center text-xs text-zinc-600">
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "0.75rem",
+            color: "var(--ink-muted)",
+            fontFamily: "var(--font-body)",
+          }}
+        >
           총 {totalVotes}표 · 5초마다 자동 갱신
         </p>
       )}

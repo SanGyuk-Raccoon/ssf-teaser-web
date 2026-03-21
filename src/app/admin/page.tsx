@@ -54,21 +54,38 @@ export default function AdminPage() {
     }
   };
 
+  /* ── Login screen ─────────────────────────────────────────── */
   if (!authenticated) {
     return (
-      <div className="max-w-sm mx-auto space-y-6 pt-20">
-        <h1 className="text-2xl font-bold text-center">관리자</h1>
-        <form onSubmit={handleLogin} className="space-y-3">
+      <div style={{ maxWidth: "360px", margin: "0 auto", paddingTop: "80px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <h1
+          className="font-display"
+          style={{ textAlign: "center", fontSize: "1.75rem", color: "var(--ink)" }}
+        >
+          관리자
+        </h1>
+        <form
+          onSubmit={handleLogin}
+          className="sketch-card"
+          style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}
+        >
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호"
-            className="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-rose-500"
+            className="sketch-input"
           />
           <button
             type="submit"
-            className="w-full py-3 bg-rose-600 hover:bg-rose-500 rounded-xl font-medium"
+            className="btn-sketch"
+            style={{
+              width: "100%",
+              padding: "13px",
+              background: "var(--ink)",
+              color: "var(--cream)",
+              fontSize: "1rem",
+            }}
           >
             로그인
           </button>
@@ -77,33 +94,71 @@ export default function AdminPage() {
     );
   }
 
+  /* ── Loading ──────────────────────────────────────────────── */
   if (!data) {
-    return <div className="text-center text-zinc-500 py-20">로딩 중...</div>;
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0", color: "var(--ink-muted)", fontFamily: "var(--font-display)", fontSize: "1.3rem" }}>
+        로딩 중...
+      </div>
+    );
   }
 
+  /* ── Admin panel ──────────────────────────────────────────── */
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-center">관리자 패널</h1>
+    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+      <h1
+        className="font-display"
+        style={{ textAlign: "center", fontSize: "1.75rem", color: "var(--ink)" }}
+      >
+        관리자 패널
+      </h1>
 
       {/* Vote control */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">투표 개폐</h2>
-        <div className="grid gap-3">
+      <section
+        className="sketch-card"
+        style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "14px" }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.1rem",
+            color: "var(--ink)",
+            margin: 0,
+          }}
+        >
+          투표 개폐
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {TIERS.map((tier) => {
             const isOpen = data.status[tier] ?? false;
             return (
               <div
                 key={tier}
-                className="flex items-center justify-between p-4 bg-zinc-900 border border-zinc-800 rounded-xl"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "12px 14px",
+                  borderRadius: "10px",
+                  border: "2px solid var(--ink)",
+                  background: "var(--cream)",
+                }}
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-medium">{tier}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontWeight: 700, fontFamily: "var(--font-body)", color: "var(--ink)" }}>
+                    {tier}
+                  </span>
                   <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      isOpen
-                        ? "bg-green-500/20 text-green-400"
-                        : "bg-zinc-800 text-zinc-500"
-                    }`}
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      padding: "2px 10px",
+                      borderRadius: "9999px",
+                      background: isOpen ? "#dcfce7" : "var(--cream-dark)",
+                      color: isOpen ? "#15803d" : "var(--ink-muted)",
+                      border: `1.5px solid ${isOpen ? "#16a34a" : "var(--ink-muted)"}`,
+                      fontFamily: "var(--font-body)",
+                    }}
                   >
                     {isOpen ? "진행 중" : "닫힘"}
                   </span>
@@ -111,11 +166,15 @@ export default function AdminPage() {
                 <button
                   onClick={() => toggleVote(tier)}
                   disabled={updating}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                    isOpen
-                      ? "bg-red-600 hover:bg-red-500"
-                      : "bg-green-600 hover:bg-green-500"
-                  }`}
+                  className="btn-sketch"
+                  style={{
+                    padding: "7px 16px",
+                    fontSize: "0.85rem",
+                    background: isOpen ? "#fee2e2" : "#dcfce7",
+                    color: isOpen ? "#dc2626" : "#15803d",
+                    borderColor: isOpen ? "#dc2626" : "#16a34a",
+                    boxShadow: isOpen ? "3px 3px 0 #dc2626" : "3px 3px 0 #16a34a",
+                  }}
                 >
                   {isOpen ? "투표 닫기" : "투표 열기"}
                 </button>
@@ -126,31 +185,94 @@ export default function AdminPage() {
       </section>
 
       {/* Results */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">투표 현황</h2>
+      <section
+        className="sketch-card"
+        style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "18px" }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.1rem",
+            color: "var(--ink)",
+            margin: 0,
+          }}
+        >
+          투표 현황
+        </h2>
+
         {TIERS.map((tier) => {
           const tierTeams = teams.filter((t) => t.tier === tier).sort((a, b) => a.order - b.order);
           const total = tierTeams.reduce((s, t) => s + (data.votes[t.id] || 0), 0);
           return (
-            <div key={tier} className="space-y-2">
-              <h3 className="text-sm text-zinc-400">
-                {tier} (총 {total}표)
-              </h3>
+            <div key={tier} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <p
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: 700,
+                  fontSize: "0.875rem",
+                  color: "var(--ink-soft)",
+                  margin: 0,
+                }}
+              >
+                {tier}{" "}
+                <span style={{ fontWeight: 500, color: "var(--ink-muted)" }}>
+                  (총 {total}표)
+                </span>
+              </p>
               {tierTeams.map((team) => {
                 const count = data.votes[team.id] || 0;
                 const pct = total > 0 ? Math.round((count / total) * 100) : 0;
                 return (
-                  <div key={team.id} className="flex items-center gap-2">
-                    <span className="text-sm w-20 sm:w-28 shrink-0 truncate">{team.club}</span>
-                    <div className="flex-1 h-6 bg-zinc-800 rounded overflow-hidden">
+                  <div key={team.id} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        width: "90px",
+                        flexShrink: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        fontFamily: "var(--font-body)",
+                        fontWeight: 600,
+                        color: team.club === "Starwars" ? "var(--starwars-text)" : "var(--spectrum-text)",
+                      }}
+                    >
+                      {team.name}
+                    </span>
+                    <div
+                      style={{
+                        flex: 1,
+                        height: "14px",
+                        background: "var(--cream-dark)",
+                        border: "2px solid var(--ink)",
+                        borderRadius: "9999px",
+                        overflow: "hidden",
+                      }}
+                    >
                       <div
-                        className={`h-full rounded transition-all ${
-                          team.club === "Starwars" ? "bg-blue-500" : "bg-purple-500"
-                        }`}
-                        style={{ width: `${pct}%` }}
+                        style={{
+                          height: "100%",
+                          width: `${pct}%`,
+                          borderRadius: "9999px",
+                          background:
+                            team.club === "Starwars"
+                              ? "var(--starwars-text)"
+                              : "var(--spectrum-text)",
+                          transition: "width 0.5s ease",
+                        }}
                       />
                     </div>
-                    <span className="text-sm text-zinc-400 w-16 sm:w-20 text-right shrink-0">
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "var(--ink-muted)",
+                        width: "72px",
+                        textAlign: "right",
+                        flexShrink: 0,
+                        fontFamily: "var(--font-body)",
+                        fontWeight: 600,
+                      }}
+                    >
                       {count}표 ({pct}%)
                     </span>
                   </div>
