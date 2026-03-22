@@ -51,8 +51,8 @@ export const teams: Team[] = [
     club: "Spectrum",
     tier: "OB",
     name: "unevens",
-    description: "Spectrum OB 팀입니다. 곧 소개가 업데이트됩니다.",
-    imageUrl: "/placeholder-team.svg",
+    description: "2018년부터 함께하고 있는 unevens입니다. 이름처럼 even하지 않은 음악을 추구합니다. 희노애락을 한데 뒤섞어 들려드리겠습니다.",
+    imageUrl: "/unevens.jpg",
     order: 6,
   },
 ];
