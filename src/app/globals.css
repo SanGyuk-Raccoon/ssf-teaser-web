@@ -416,3 +416,72 @@ body {
   color: var(--rainbow-red);
   cursor: default;
 }
+
+/* ── Glass panel — hand-drawn wobbly double border ───────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 6px;
+  position: relative;
+}
+
+/* Outer wobbly border */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2.5px solid var(--ink);
+  border-radius: 6px;
+  pointer-events: none;
+  filter: url(#wobbly);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Inner wobbly border */
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  pointer-events: none;
+  filter: url(#wobbly2);
+}
+
+/* ── Spaceship animations ────────────────────────────────────── */
+@keyframes fly-left {
+  0%   { transform: translate(100vw, 0) rotate(5deg); }
+  100% { transform: translate(-120vw, -15vh) rotate(5deg); }
+}
+
+@keyframes fly-right {
+  0%   { transform: translate(-100vw, 0) rotate(-8deg); }
+  100% { transform: translate(120vw, -10vh) rotate(-8deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-50px); }
+}
+
+.planet-float {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  animation: float 4s ease-in-out infinite;
+}
+
+.spaceship-left {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  animation: fly-left 25s linear infinite;
+}
+
+.spaceship-right {
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  animation: fly-right 30s linear infinite;
+}

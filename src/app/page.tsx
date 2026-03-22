@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { teams, TIERS } from "@/lib/data";
-import Credits from "@/components/Credits";
+
 
 export default function Home() {
   return (
@@ -53,30 +53,65 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Catchphrase ────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "60px 24px 80px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="glass-panel"
+          style={{
+            padding: "48px 36px",
+            maxWidth: "600px",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.5rem, 5vw, 2.4rem)",
+              color: "var(--ink)",
+              lineHeight: 1.5,
+            }}
+          >
+            Spectrum과 Starwars가<br />
+            함께한다면<br />
+            그것도 SSF가 아닐까?
+          </p>
+        </div>
+      </section>
+
       {/* ── Lineup ──────────────────────────────────────────────── */}
       <section
         style={{
-          padding: "80px 24px 100px",
+          padding: "0 24px 100px",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+        <div
+          className="glass-panel"
+          style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
+        >
 
           {/* Section header */}
-          <div style={{ textAlign: "center", marginBottom: "60px" }}>
-            <h2 className="section-heading">라인업</h2>
-            <p
+          <div style={{ textAlign: "center", marginBottom: "40px" }}>
+            <h2
               style={{
-                color: "var(--ink-muted)",
-                fontSize: "0.9rem",
-                marginTop: "10px",
-                fontWeight: 500,
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+                color: "var(--ink)",
               }}
             >
-              공연 순서대로 소개합니다
-            </p>
+              라인업
+            </h2>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
             {TIERS.map((tier) => {
               const tierTeams = teams
                 .filter((t) => t.tier === tier)
@@ -84,41 +119,32 @@ export default function Home() {
 
               return (
                 <div key={tier}>
-                  {/* Tier heading */}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "16px",
-                      marginBottom: "24px",
-                    }}
-                  >
-                    <span className="tier-tag">{tier}</span>
-                    <div
-                      style={{
-                        flex: 1,
-                        height: "1px",
-                        background: "var(--ink)",
-                        opacity: 0.1,
-                      }}
-                    />
-                  </div>
-
-                  {/* Team grid — 2 col mobile, 3 col md, 4 col lg */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-                      gap: "20px",
-                    }}
-                  >
-                    {tierTeams.map((team) => (
+                  {/* Team list */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+                    {tierTeams.map((team) => {
+                      const isStarwars = team.club === "Starwars";
+                      return (
                       <div
                         key={team.id}
-                        className="open-card"
-                        style={{ overflow: "hidden" }}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: isStarwars ? "flex-start" : "flex-end",
+                          gap: "12px",
+                          width: "80%",
+                          alignSelf: isStarwars ? "flex-start" : "flex-end",
+                        }}
                       >
-                        <div style={{ position: "relative", aspectRatio: "1 / 1" }}>
+                        <div
+                          style={{
+                            position: "relative",
+                            width: "100%",
+                            aspectRatio: "1 / 1",
+                            borderRadius: "16px",
+                            overflow: "hidden",
+                            border: "1.5px solid rgba(0,0,0,0.08)",
+                          }}
+                        >
                           <Image
                             src={team.imageUrl}
                             alt={team.name}
@@ -126,50 +152,33 @@ export default function Home() {
                             className="object-cover"
                           />
                         </div>
-                        <div
-                          style={{
-                            padding: "14px 16px 16px",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "6px",
-                          }}
-                        >
-                          <span
-                            className={
-                              team.club === "Starwars" ? "badge-starwars" : "badge-spectrum"
-                            }
-                            style={{ alignSelf: "flex-start" }}
-                          >
-                            {team.club}
-                          </span>
+                        <div style={{ width: "100%", textAlign: isStarwars ? "left" : "right" }}>
                           <h4
                             style={{
                               fontFamily: "var(--font-body)",
                               fontWeight: 700,
-                              fontSize: "0.9rem",
+                              fontSize: "1.3rem",
                               color: "var(--ink)",
                               margin: 0,
+                              marginBottom: "4px",
                             }}
                           >
                             {team.name}
                           </h4>
                           <p
                             style={{
-                              fontSize: "0.75rem",
+                              fontSize: "1rem",
                               color: "var(--ink-muted)",
                               margin: 0,
-                              lineHeight: 1.5,
-                              display: "-webkit-box",
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
+                              lineHeight: 1.6,
                             }}
                           >
                             {team.description}
                           </p>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -178,8 +187,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Credits ─────────────────────────────────────────────── */}
-      <Credits />
 
     </div>
   );

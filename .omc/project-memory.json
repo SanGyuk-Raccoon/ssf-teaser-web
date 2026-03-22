@@ -129,26 +129,38 @@
   "hotPaths": [
     {
       "path": "src\\app\\page.tsx",
-      "accessCount": 15,
-      "lastAccessed": 1774156031633,
-      "type": "file"
-    },
-    {
-      "path": "src\\components\\Credits.tsx",
-      "accessCount": 9,
-      "lastAccessed": 1774155009461,
-      "type": "file"
-    },
-    {
-      "path": "src\\app\\layout.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1774155713546,
+      "accessCount": 43,
+      "lastAccessed": 1774158038928,
       "type": "file"
     },
     {
       "path": "src\\components\\ParallaxBg.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1774156658781,
+      "accessCount": 29,
+      "lastAccessed": 1774158815086,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\Credits.tsx",
+      "accessCount": 15,
+      "lastAccessed": 1774157148601,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\layout.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1774157415689,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\globals.css",
+      "accessCount": 10,
+      "lastAccessed": 1774158764946,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\data.ts",
+      "accessCount": 4,
+      "lastAccessed": 1774157900016,
       "type": "file"
     },
     {
@@ -179,6 +191,42 @@
       "path": "public\\ssf-bg0.png",
       "accessCount": 1,
       "lastAccessed": 1774156595734,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 1,
+      "lastAccessed": 1774157137978,
+      "type": "directory"
+    },
+    {
+      "path": "public\\ssf-guitar.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774158122189,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-mic.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774158122423,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-planet.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774158122928,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-spaceship0.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774158122956,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-spaceship1.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774158123376,
       "type": "file"
     }
   ],

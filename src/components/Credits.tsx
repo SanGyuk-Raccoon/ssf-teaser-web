@@ -56,10 +56,20 @@ export default function Credits() {
   return (
     <section
       style={{
-        padding: "120px 24px 160px",
-        overflow: "hidden",
+        padding: "80px 24px 160px",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
+      <div
+        className="glass-panel"
+        style={{
+          maxWidth: "600px",
+          width: "100%",
+          padding: "48px 32px",
+          overflow: "hidden",
+        }}
+      >
       <div
         style={{
           textAlign: "center",
@@ -86,7 +96,7 @@ export default function Credits() {
           flexDirection: "column",
           alignItems: "center",
           gap: "48px",
-          maxWidth: "500px",
+          maxWidth: "600px",
           margin: "0 auto",
         }}
       >
@@ -157,6 +167,7 @@ export default function Credits() {
             Spectrum / Starwars Festival 2026
           </p>
         </div>
+      </div>
       </div>
     </section>
   );
