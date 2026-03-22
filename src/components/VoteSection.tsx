@@ -82,7 +82,7 @@ export default function VoteSection() {
                 fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
                 color: "var(--ink)",
               }}>
-                {tier}조
+                {tier}
               </span>
               {isOpen ? (
                 <span style={{

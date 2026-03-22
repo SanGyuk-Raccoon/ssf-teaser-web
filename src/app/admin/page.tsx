@@ -410,7 +410,7 @@ export default function AdminPage() {
                       margin: 0,
                     }}
                   >
-                    {tier}조
+                    {tier}
                   </p>
                   <span style={{ fontSize: "0.85rem", color: "var(--ink-muted)", fontWeight: 600 }}>
                     평균 {result.avg}점 ({result.count}명)
