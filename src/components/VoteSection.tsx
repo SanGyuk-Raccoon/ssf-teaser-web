@@ -3,17 +3,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { TIERS } from "@/lib/data";
 import { getSupabase } from "@/lib/supabase";
+import { hasVotedTier, markVotedTier } from "@/lib/storage";
 
-const STORAGE_PREFIX = "ssf-teaser-";
-
-function hasVotedTier(tier: string): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(`${STORAGE_PREFIX}vote-${tier}`) !== null;
-}
-
-function markVotedTier(tier: string): void {
-  localStorage.setItem(`${STORAGE_PREFIX}vote-${tier}`, "1");
-}
+const SCORE_GUIDES: Record<string, { 1: string; 3: string; 5: string }> = {
+  "신입": { 1: "신입 가이드 1점", 3: "신입 가이드 3점", 5: "신입 가이드 5점" },
+  "YB":  { 1: "YB 가이드 1점", 3: "YB 가이드 3점", 5: "YB 가이드 5점" },
+  "OB":  { 1: "OB 가이드 1점", 3: "OB 가이드 3점", 5: "OB 가이드 5점" },
+};
 
 export default function VoteSection() {
   const [status, setStatus] = useState<Record<string, boolean>>({});
@@ -23,9 +19,13 @@ export default function VoteSection() {
 
   const fetchStatus = useCallback(async () => {
     const supabase = getSupabase();
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("vote_status")
       .select("tier, is_open");
+    if (error) {
+      console.error("Failed to fetch vote status:", error.message);
+      return;
+    }
     const s: Record<string, boolean> = {};
     for (const row of data ?? []) {
       s[row.tier] = row.is_open;
@@ -54,7 +54,11 @@ export default function VoteSection() {
     setSubmitting(tier);
     try {
       const supabase = getSupabase();
-      await supabase.from("votes").insert({ tier, score: scores[tier] });
+      const { error } = await supabase.from("votes").insert({ tier, score: scores[tier] });
+      if (error) {
+        console.error("Failed to submit vote:", error.message);
+        return;
+      }
       markVotedTier(tier);
       setSubmitted((prev) => ({ ...prev, [tier]: true }));
     } finally {
@@ -114,28 +118,105 @@ export default function VoteSection() {
               </div>
             ) : isOpen ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => handleScore(tier, s)}
-                      style={{
-                        flex: 1,
-                        height: "48px",
-                        borderRadius: "12px",
-                        border: score === s ? "2.5px solid var(--ink)" : "1.5px solid rgba(0,0,0,0.1)",
-                        background: score === s ? "var(--ink)" : "rgba(255,255,255,0.5)",
-                        color: score === s ? "#fff" : "var(--ink)",
-                        fontSize: "1.2rem",
-                        fontFamily: "var(--font-display)",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        transition: "all 0.15s ease",
-                      }}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                {/* Discrete slider */}
+                <div style={{ padding: "8px 0" }}>
+                  <div style={{ position: "relative", height: "40px", display: "flex", alignItems: "center" }}>
+                    {/* Track */}
+                    <div style={{
+                      position: "absolute",
+                      left: "10%",
+                      right: "10%",
+                      height: "4px",
+                      background: "var(--cream-dark)",
+                      borderRadius: "2px",
+                    }} />
+                    {/* Filled track */}
+                    {score > 0 && (
+                      <div style={{
+                        position: "absolute",
+                        left: "10%",
+                        width: `${((score - 1) / 4) * 80}%`,
+                        height: "4px",
+                        background: "var(--ink)",
+                        borderRadius: "2px",
+                        transition: "width 0.15s ease",
+                      }} />
+                    )}
+                    {/* Dots */}
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => handleScore(tier, s)}
+                        style={{
+                          position: "absolute",
+                          left: `${10 + ((s - 1) / 4) * 80}%`,
+                          transform: "translateX(-50%)",
+                          width: score === s ? "32px" : "20px",
+                          height: score === s ? "32px" : "20px",
+                          borderRadius: "50%",
+                          border: score === s ? "3px solid var(--ink)" : "2px solid var(--cream-dark)",
+                          background: s <= score ? "var(--ink)" : "#fff",
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: score === s ? 2 : 1,
+                          padding: 0,
+                        }}
+                      >
+                        {score === s && (
+                          <span style={{
+                            color: "#fff",
+                            fontSize: "0.75rem",
+                            fontFamily: "var(--font-display)",
+                            fontWeight: 700,
+                          }}>
+                            {s}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Score labels */}
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "0 2%" }}>
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <span
+                        key={s}
+                        style={{
+                          width: "20%",
+                          textAlign: "center",
+                          fontSize: "0.7rem",
+                          fontFamily: "var(--font-display)",
+                          color: score === s ? "var(--ink)" : "var(--ink-muted)",
+                          fontWeight: score === s ? 700 : 400,
+                          opacity: score === s ? 1 : 0.6,
+                        }}
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                  {/* Guide text */}
+                  {SCORE_GUIDES[tier] && (
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0 0", marginTop: "2px" }}>
+                      {[1, 3, 5].map((s) => (
+                        <span
+                          key={s}
+                          style={{
+                            width: "33%",
+                            textAlign: s === 1 ? "left" : s === 5 ? "right" : "center",
+                            fontSize: "0.7rem",
+                            fontFamily: "var(--font-body)",
+                            color: "var(--ink-muted)",
+                            lineHeight: 1.3,
+                          }}
+                        >
+                          {SCORE_GUIDES[tier][s as 1 | 3 | 5]}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={() => handleSubmitTier(tier)}

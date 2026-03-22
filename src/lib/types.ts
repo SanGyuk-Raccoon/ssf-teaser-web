@@ -14,11 +14,26 @@ export interface Vote {
 }
 
 export interface NamingEntry {
-  id: string;
+  id: number;
   title: string;
-  authorName: string;
   likes: number;
-  createdAt: string;
+  created_at: string;
+}
+
+export interface AdminNamingEntry extends NamingEntry {
+  password: string;
+}
+
+export interface VoteResult {
+  total: number;
+  count: number;
+  avg: number;
+}
+
+export interface VoteData {
+  results: Record<string, VoteResult>;
+  totalVoters: number;
+  status: Record<string, boolean>;
 }
 
 export interface VoteStatus {

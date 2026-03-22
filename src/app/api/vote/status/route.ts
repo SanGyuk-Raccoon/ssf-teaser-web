@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
+import { verifyAdmin } from "@/lib/auth";
 
 export async function GET() {
   const { data } = await getSupabase().from("vote_status").select("tier, is_open");
@@ -11,13 +12,21 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { password, status } = await req.json();
-
-  if (password !== (process.env.ADMIN_PASSWORD || "ssf2026")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  let body: { password?: string; status?: Record<string, boolean> };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  // Update each tier
+  const authError = verifyAdmin(body.password ?? "");
+  if (authError) return authError;
+  const { status } = body;
+
+  if (!status || typeof status !== "object") {
+    return NextResponse.json({ error: "status is required" }, { status: 400 });
+  }
+
   for (const [tier, isOpen] of Object.entries(status)) {
     await getSupabase()
       .from("vote_status")

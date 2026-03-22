@@ -3,6 +3,7 @@ import { teams, TIERS } from "@/lib/data";
 import HeroZoom from "@/components/HeroZoom";
 import VoteSection from "@/components/VoteSection";
 import NamingSection from "@/components/NamingSection";
+import DirectionsSection from "@/components/DirectionsSection";
 
 export default function Home() {
   return (
@@ -224,6 +225,33 @@ export default function Home() {
             </h2>
           </div>
           <NamingSection />
+        </div>
+      </section>
+
+      {/* ── Directions ──────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "0 24px 100px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="glass-panel"
+          style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+                color: "var(--ink)",
+              }}
+            >
+              찾아오시는 길
+            </h2>
+          </div>
+          <DirectionsSection />
         </div>
       </section>
 

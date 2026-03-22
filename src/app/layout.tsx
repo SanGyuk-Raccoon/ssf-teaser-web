@@ -3,7 +3,7 @@ import "./globals.css";
 import ParallaxBg from "@/components/ParallaxBg";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ssf.example.com"),
+  metadataBase: new URL("https://ssf-teaser-web.vercel.app"),
   title: "SSF - Spectrum/Starwars Festival",
   description: "2026.04.18 남문 로데오 아트홀 | Spectrum/Starwars Festival",
   openGraph: {

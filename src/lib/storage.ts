@@ -2,13 +2,13 @@
 
 const STORAGE_PREFIX = "ssf-teaser-";
 
-export function hasVotedAll(): boolean {
+export function hasVotedTier(tier: string): boolean {
   if (typeof window === "undefined") return false;
-  return localStorage.getItem(`${STORAGE_PREFIX}vote-submitted`) !== null;
+  return localStorage.getItem(`${STORAGE_PREFIX}vote-${tier}`) !== null;
 }
 
-export function markVotedAll(): void {
-  localStorage.setItem(`${STORAGE_PREFIX}vote-submitted`, "1");
+export function markVotedTier(tier: string): void {
+  localStorage.setItem(`${STORAGE_PREFIX}vote-${tier}`, "1");
 }
 
 export function hasLikedEntry(entryId: string): boolean {
@@ -22,13 +22,4 @@ export function markLikedEntry(entryId: string): void {
 
 export function removeLikedEntry(entryId: string): void {
   localStorage.removeItem(`${STORAGE_PREFIX}like-${entryId}`);
-}
-
-export function hasSubmittedNaming(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem(`${STORAGE_PREFIX}naming-submitted`) !== null;
-}
-
-export function markNamingSubmitted(): void {
-  localStorage.setItem(`${STORAGE_PREFIX}naming-submitted`, "1");
 }

@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
+import { verifyAdmin } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
-  const { password } = await req.json();
-
-  if (password !== (process.env.ADMIN_PASSWORD || "ssf2026")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  let body: { password?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+
+  const authError = verifyAdmin(body.password ?? "");
+  if (authError) return authError;
 
   const { data } = await getSupabase()
     .from("naming_entries")
@@ -17,11 +22,16 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { password, entryId } = await req.json();
-
-  if (password !== (process.env.ADMIN_PASSWORD || "ssf2026")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  let body: { password?: string; entryId?: number };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
+
+  const authError = verifyAdmin(body.password ?? "");
+  if (authError) return authError;
+  const { entryId } = body;
 
   await getSupabase().from("naming_entries").delete().eq("id", entryId);
   return NextResponse.json({ ok: true });

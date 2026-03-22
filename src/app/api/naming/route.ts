@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabase } from "@/lib/supabase";
 
 export async function DELETE(req: NextRequest) {
-  const { entryId, password } = await req.json();
+  let body: { entryId?: number; password?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+  const { entryId, password } = body;
 
   if (!entryId || !password) {
     return NextResponse.json({ error: "Entry ID and password required" }, { status: 400 });

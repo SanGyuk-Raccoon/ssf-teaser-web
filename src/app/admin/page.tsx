@@ -3,27 +3,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { TIERS } from "@/lib/data";
 import { getSupabase } from "@/lib/supabase";
-
-interface VoteData {
-  results: Record<string, { total: number; count: number; avg: number }>;
-  totalVoters: number;
-  status: Record<string, boolean>;
-}
-
-interface NamingEntry {
-  id: number;
-  title: string;
-  password: string;
-  likes: number;
-  created_at: string;
-}
+import type { VoteData, AdminNamingEntry } from "@/lib/types";
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [data, setData] = useState<VoteData | null>(null);
   const [updating, setUpdating] = useState(false);
-  const [namingEntries, setNamingEntries] = useState<NamingEntry[]>([]);
+  const [namingEntries, setNamingEntries] = useState<AdminNamingEntry[]>([]);
 
   const fetchData = useCallback(async () => {
     const supabase = getSupabase();
@@ -240,8 +227,10 @@ export default function AdminPage() {
             투표 개폐
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {TIERS.map((tier) => {
+            {[...TIERS, "naming" as const].map((tier) => {
               const isOpen = data.status[tier] ?? false;
+              const label = tier === "naming" ? "이름 공모" : tier;
+              const isNaming = tier === "naming";
               return (
                 <div
                   key={tier}
@@ -252,6 +241,7 @@ export default function AdminPage() {
                     padding: "14px 18px",
                     borderRadius: "14px",
                     background: "var(--cream-mid)",
+                    ...(isNaming ? { borderTop: "1px solid var(--cream-dark)", marginTop: "4px" } : {}),
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -262,7 +252,7 @@ export default function AdminPage() {
                         color: "var(--ink)",
                       }}
                     >
-                      {tier}
+                      {label}
                     </span>
                     <span
                       style={{
@@ -290,7 +280,7 @@ export default function AdminPage() {
                       color: isOpen ? "#dc2626" : "#15803d",
                     }}
                   >
-                    {isOpen ? "투표 닫기" : "투표 열기"}
+                    {isOpen ? (isNaming ? "공모 닫기" : "투표 닫기") : (isNaming ? "공모 열기" : "투표 열기")}
                   </button>
                 </div>
               );
