@@ -68,6 +68,33 @@ export default function AdminPage() {
     else alert("삭제 실패");
   };
 
+  const resetLocalVotes = () => {
+    if (!confirm("이 브라우저의 투표 기록을 초기화하시겠습니까?")) return;
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith("ssf-teaser-vote-"))
+      .forEach((k) => localStorage.removeItem(k));
+    alert("브라우저 투표 기록이 초기화되었습니다. 새로고침 후 다시 투표할 수 있습니다.");
+  };
+
+  const resetDbVotes = async () => {
+    if (!confirm("DB의 모든 투표 데이터를 삭제하고 라운드를 갱신하시겠습니까?\n모든 기기에서 다시 투표할 수 있게 됩니다.\n이 작업은 되돌릴 수 없습니다.")) return;
+    const res = await fetch("/api/vote/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.ok) {
+      // 관리자 본인의 localStorage도 초기화
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith("ssf-teaser-vote-"))
+        .forEach((k) => localStorage.removeItem(k));
+      await fetchData();
+      alert("투표 데이터가 초기화되었습니다. 모든 기기에서 다시 투표할 수 있습니다.");
+    } else {
+      alert("초기화 실패");
+    }
+  };
+
   const toggleVote = async (tier: string) => {
     if (!data || updating) return;
     setUpdating(true);
@@ -443,6 +470,69 @@ export default function AdminPage() {
               총 {data.totalVoters}명 참여
             </p>
           )}
+        </section>
+
+        {/* Reset controls */}
+        <section
+          style={{
+            background: "#fff",
+            borderRadius: "24px",
+            padding: "28px 28px",
+            boxShadow: "var(--soft-shadow)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "18px",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "1.2rem",
+              color: "var(--ink)",
+              margin: 0,
+            }}
+          >
+            초기화
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <button
+              onClick={resetLocalVotes}
+              className="btn-open"
+              style={{
+                width: "100%",
+                padding: "14px",
+                fontSize: "0.9rem",
+                borderRadius: "14px",
+                background: "var(--cream-mid)",
+                color: "var(--ink)",
+                fontFamily: "var(--font-body)",
+              }}
+            >
+              내 브라우저 투표 기록 초기화
+            </button>
+            <p style={{ fontSize: "0.75rem", color: "var(--ink-muted)", margin: 0, paddingLeft: "4px" }}>
+              이 기기에서 다시 투표할 수 있게 됩니다. DB 데이터는 유지됩니다.
+            </p>
+            <button
+              onClick={resetDbVotes}
+              className="btn-open"
+              style={{
+                width: "100%",
+                padding: "14px",
+                fontSize: "0.9rem",
+                borderRadius: "14px",
+                background: "#fee2e2",
+                color: "#dc2626",
+                fontFamily: "var(--font-body)",
+                fontWeight: 700,
+              }}
+            >
+              전체 초기화 (모든 기기 재투표 허용)
+            </button>
+            <p style={{ fontSize: "0.75rem", color: "#dc2626", margin: 0, paddingLeft: "4px" }}>
+              DB 투표 데이터 삭제 + 라운드 갱신으로 모든 기기에서 다시 투표할 수 있습니다. 되돌릴 수 없습니다.
+            </p>
+          </div>
         </section>
 
       </div>

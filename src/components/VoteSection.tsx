@@ -16,30 +16,36 @@ export default function VoteSection() {
   const [scores, setScores] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState<Record<string, boolean>>({});
   const [submitting, setSubmitting] = useState<string | null>(null);
+  const [round, setRound] = useState("1");
 
   const fetchStatus = useCallback(async () => {
     const supabase = getSupabase();
-    const { data, error } = await supabase
-      .from("vote_status")
-      .select("tier, is_open");
-    if (error) {
-      console.error("Failed to fetch vote status:", error.message);
+    const [statusRes, roundRes] = await Promise.all([
+      supabase.from("vote_status").select("tier, is_open"),
+      supabase.from("config").select("value").eq("key", "vote_round").single(),
+    ]);
+    if (statusRes.error) {
+      console.error("Failed to fetch vote status:", statusRes.error.message);
       return;
     }
     const s: Record<string, boolean> = {};
-    for (const row of data ?? []) {
+    for (const row of statusRes.data ?? []) {
       s[row.tier] = row.is_open;
     }
     setStatus(s);
+
+    const currentRound = roundRes.data?.value ?? "1";
+    setRound(currentRound);
+
+    const saved: Record<string, boolean> = {};
+    for (const tier of TIERS) {
+      saved[tier] = hasVotedTier(tier, currentRound);
+    }
+    setSubmitted(saved);
   }, []);
 
   useEffect(() => {
     fetchStatus();
-    const saved: Record<string, boolean> = {};
-    for (const tier of TIERS) {
-      saved[tier] = hasVotedTier(tier);
-    }
-    setSubmitted(saved);
     const interval = setInterval(fetchStatus, 5000);
     return () => clearInterval(interval);
   }, [fetchStatus]);
@@ -59,7 +65,7 @@ export default function VoteSection() {
         console.error("Failed to submit vote:", error.message);
         return;
       }
-      markVotedTier(tier);
+      markVotedTier(tier, round);
       setSubmitted((prev) => ({ ...prev, [tier]: true }));
     } finally {
       setSubmitting(null);

@@ -2,13 +2,13 @@
 
 const STORAGE_PREFIX = "ssf-teaser-";
 
-export function hasVotedTier(tier: string): boolean {
+export function hasVotedTier(tier: string, round: string): boolean {
   if (typeof window === "undefined") return false;
-  return localStorage.getItem(`${STORAGE_PREFIX}vote-${tier}`) !== null;
+  return localStorage.getItem(`${STORAGE_PREFIX}vote-${tier}`) === round;
 }
 
-export function markVotedTier(tier: string): void {
-  localStorage.setItem(`${STORAGE_PREFIX}vote-${tier}`, "1");
+export function markVotedTier(tier: string, round: string): void {
+  localStorage.setItem(`${STORAGE_PREFIX}vote-${tier}`, round);
 }
 
 export function hasLikedEntry(entryId: string): boolean {
