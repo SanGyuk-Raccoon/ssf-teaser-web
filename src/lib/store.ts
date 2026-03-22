@@ -31,23 +31,59 @@ export function setVoteStatus(status: VoteStatusData): void {
   fs.writeFileSync(STATUS_FILE, JSON.stringify(status, null, 2));
 }
 
-// --- Votes ---
+// --- Votes (1-5 rating per tier) ---
+
+export interface VoteEntry {
+  "신입": number;
+  YB: number;
+  OB: number;
+}
 
 export interface VotesData {
-  [teamId: string]: number;
+  entries: VoteEntry[];
 }
 
 export function getVotes(): VotesData {
   ensureDataDir();
-  if (!fs.existsSync(VOTES_FILE)) return {};
+  if (!fs.existsSync(VOTES_FILE)) return { entries: [] };
   return JSON.parse(fs.readFileSync(VOTES_FILE, "utf-8"));
 }
 
-export function addVote(teamId: string): VotesData {
+export function addVote(entry: VoteEntry): VotesData {
   const votes = getVotes();
-  votes[teamId] = (votes[teamId] || 0) + 1;
+  votes.entries.push(entry);
   fs.writeFileSync(VOTES_FILE, JSON.stringify(votes, null, 2));
   return votes;
+}
+
+export function addTierVote(tier: string, score: number): void {
+  ensureDataDir();
+  const TIER_VOTES_FILE = path.join(DATA_DIR, `votes-${tier}.json`);
+  let scores: number[] = [];
+  if (fs.existsSync(TIER_VOTES_FILE)) {
+    scores = JSON.parse(fs.readFileSync(TIER_VOTES_FILE, "utf-8"));
+  }
+  scores.push(score);
+  fs.writeFileSync(TIER_VOTES_FILE, JSON.stringify(scores));
+}
+
+export function getVoteResults() {
+  ensureDataDir();
+  const tiers = ["신입", "YB", "OB"] as const;
+  const results: Record<string, { total: number; count: number; avg: number }> = {};
+  let maxVoters = 0;
+  for (const tier of tiers) {
+    const TIER_FILE = path.join(DATA_DIR, `votes-${tier}.json`);
+    let scores: number[] = [];
+    if (fs.existsSync(TIER_FILE)) {
+      scores = JSON.parse(fs.readFileSync(TIER_FILE, "utf-8"));
+    }
+    const total = scores.reduce((s, v) => s + v, 0);
+    const count = scores.length;
+    results[tier] = { total, count, avg: count > 0 ? Math.round((total / count) * 10) / 10 : 0 };
+    if (count > maxVoters) maxVoters = count;
+  }
+  return { results, totalVoters: maxVoters };
 }
 
 // --- Naming ---

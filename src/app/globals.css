@@ -476,12 +476,12 @@ body {
   position: fixed;
   z-index: -1;
   pointer-events: none;
-  animation: fly-left 25s linear infinite;
+  animation: fly-left 35s linear infinite;
 }
 
 .spaceship-right {
   position: fixed;
   z-index: -1;
   pointer-events: none;
-  animation: fly-right 30s linear infinite;
+  animation: fly-right 20s linear infinite;
 }

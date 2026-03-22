@@ -21,6 +21,7 @@ const floatingItems: FloatingItem[] = [
 export default function ParallaxBg() {
   const bg0Ref = useRef<HTMLDivElement>(null);
   const bg1Ref = useRef<HTMLDivElement>(null);
+  const moonRef = useRef<HTMLImageElement>(null);
   const itemRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
@@ -32,6 +33,12 @@ export default function ParallaxBg() {
       const y = window.scrollY;
       bg1.style.transform = `translate3d(0, ${y * -0.2}px, 0)`;
       bg0.style.transform = `translate3d(0, ${y * -0.08}px, 0)`;
+
+      // Moon rises from bottom as you scroll down
+      if (moonRef.current) {
+        const moonY = y * -0.22;
+        moonRef.current.style.transform = `translate3d(0, ${moonY}px, 0)`;
+      }
 
       itemRefs.current.forEach((el, i) => {
         if (!el) return;
@@ -105,6 +112,25 @@ export default function ParallaxBg() {
           }}
         />
       ))}
+      {/* Moon — rises from bottom on scroll */}
+      <img
+        ref={moonRef}
+        src="/ssf-bg2.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          bottom: "-165%",
+          left: "10%",
+          transform: "none",
+          width: "clamp(600px, 144vw, 1440px)",
+          height: "auto",
+          zIndex: -1,
+          opacity: 0.6,
+          willChange: "transform",
+          pointerEvents: "none",
+        }}
+      />
       {/* Planet — floating */}
       <img
         src="/ssf-planet.PNG"

@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addVote, getVotes, getVoteStatus } from "@/lib/store";
-import { teams } from "@/lib/data";
+import { getVoteResults, getVoteStatus, addTierVote } from "@/lib/store";
 
 export async function GET() {
-  return NextResponse.json({ votes: getVotes(), status: getVoteStatus() });
+  return NextResponse.json({ ...getVoteResults(), status: getVoteStatus() });
 }
 
 export async function POST(req: NextRequest) {
-  const { teamId } = await req.json();
-  const team = teams.find((t) => t.id === teamId);
-  if (!team) {
-    return NextResponse.json({ error: "Invalid team" }, { status: 400 });
+  const { tier, score } = await req.json();
+
+  const validTiers = ["신입", "YB", "OB"];
+  if (!validTiers.includes(tier)) {
+    return NextResponse.json({ error: "Invalid tier" }, { status: 400 });
+  }
+  if (typeof score !== "number" || score < 1 || score > 5) {
+    return NextResponse.json({ error: "Score must be 1-5" }, { status: 400 });
   }
 
   const status = getVoteStatus();
-  if (!status[team.tier]) {
-    return NextResponse.json({ error: "Voting is closed for this category" }, { status: 403 });
+  if (!status[tier as keyof typeof status]) {
+    return NextResponse.json({ error: "Voting is closed for this tier" }, { status: 403 });
   }
 
-  const votes = addVote(teamId);
-  return NextResponse.json({ votes });
+  addTierVote(tier, score);
+  return NextResponse.json({ ok: true });
 }

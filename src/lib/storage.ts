@@ -2,18 +2,13 @@
 
 const STORAGE_PREFIX = "ssf-teaser-";
 
-export function hasVoted(category: string): boolean {
+export function hasVotedAll(): boolean {
   if (typeof window === "undefined") return false;
-  return localStorage.getItem(`${STORAGE_PREFIX}vote-${category}`) !== null;
+  return localStorage.getItem(`${STORAGE_PREFIX}vote-submitted`) !== null;
 }
 
-export function markVoted(category: string, teamId: string): void {
-  localStorage.setItem(`${STORAGE_PREFIX}vote-${category}`, teamId);
-}
-
-export function getVotedTeam(category: string): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(`${STORAGE_PREFIX}vote-${category}`);
+export function markVotedAll(): void {
+  localStorage.setItem(`${STORAGE_PREFIX}vote-submitted`, "1");
 }
 
 export function hasLikedEntry(entryId: string): boolean {

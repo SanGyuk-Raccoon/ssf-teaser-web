@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { teams, TIERS } from "@/lib/data";
+import { TIERS } from "@/lib/data";
 
 interface VoteData {
-  votes: Record<string, number>;
+  results: Record<string, { total: number; count: number; avg: number }>;
+  totalVoters: number;
   status: Record<string, boolean>;
 }
 
@@ -272,94 +273,53 @@ export default function AdminPage() {
             투표 현황
           </h2>
 
-          {TIERS.map((tier) => {
-            const tierTeams = teams
-              .filter((t) => t.tier === tier)
-              .sort((a, b) => a.order - b.order);
-            const total = tierTeams.reduce((s, t) => s + (data.votes[t.id] || 0), 0);
+          {data.results && TIERS.map((tier) => {
+            const result = data.results[tier] || { total: 0, count: 0, avg: 0 };
             return (
               <div key={tier} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <p
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      color: "var(--ink-soft)",
+                      margin: 0,
+                    }}
+                  >
+                    {tier}조
+                  </p>
+                  <span style={{ fontSize: "0.85rem", color: "var(--ink-muted)", fontWeight: 600 }}>
+                    평균 {result.avg}점 ({result.count}명)
+                  </span>
+                </div>
+                <div
                   style={{
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 700,
-                    fontSize: "0.875rem",
-                    color: "var(--ink-soft)",
-                    margin: 0,
+                    flex: 1,
+                    height: "12px",
+                    background: "var(--cream-dark)",
+                    borderRadius: "9999px",
+                    overflow: "hidden",
                   }}
                 >
-                  {tier}{" "}
-                  <span style={{ fontWeight: 500, color: "var(--ink-muted)" }}>
-                    (총 {total}표)
-                  </span>
-                </p>
-                {tierTeams.map((team) => {
-                  const count = data.votes[team.id] || 0;
-                  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-                  return (
-                    <div
-                      key={team.id}
-                      style={{ display: "flex", alignItems: "center", gap: "10px" }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.8rem",
-                          width: "90px",
-                          flexShrink: 0,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          fontFamily: "var(--font-body)",
-                          fontWeight: 600,
-                          color:
-                            team.club === "Starwars"
-                              ? "var(--starwars-text)"
-                              : "var(--spectrum-text)",
-                        }}
-                      >
-                        {team.name}
-                      </span>
-                      <div
-                        style={{
-                          flex: 1,
-                          height: "10px",
-                          background: "var(--cream-dark)",
-                          borderRadius: "9999px",
-                          overflow: "hidden",
-                        }}
-                      >
-                        <div
-                          style={{
-                            height: "100%",
-                            width: `${pct}%`,
-                            borderRadius: "9999px",
-                            background:
-                              team.club === "Starwars"
-                                ? "var(--starwars-text)"
-                                : "var(--spectrum-text)",
-                            transition: "width 0.5s ease",
-                          }}
-                        />
-                      </div>
-                      <span
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "var(--ink-muted)",
-                          width: "72px",
-                          textAlign: "right",
-                          flexShrink: 0,
-                          fontFamily: "var(--font-body)",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {count}표 ({pct}%)
-                      </span>
-                    </div>
-                  );
-                })}
+                  <div
+                    style={{
+                      height: "100%",
+                      width: `${(result.avg / 5) * 100}%`,
+                      borderRadius: "9999px",
+                      background: "var(--rainbow-gradient)",
+                      transition: "width 0.5s ease",
+                    }}
+                  />
+                </div>
               </div>
             );
           })}
+          {data.totalVoters !== undefined && (
+            <p style={{ fontSize: "0.85rem", color: "var(--ink-muted)", margin: 0, textAlign: "center" }}>
+              총 {data.totalVoters}명 참여
+            </p>
+          )}
         </section>
 
       </div>
