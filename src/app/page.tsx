@@ -78,9 +78,25 @@ export default function Home() {
               lineHeight: 1.5,
             }}
           >
+            <span style={{ fontSize: "clamp(3rem, 10vw, 5rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201C"}</span>
+            <br />
             Spectrum과 Starwars가<br />
             함께한다면<br />
-            그것도 SSF가 아닐까?
+            그것도 SSF가 아닐까?<br />
+            <br />
+            <span style={{ fontSize: "clamp(3rem, 10vw, 5rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201D"}</span>
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "clamp(0.9rem, 3vw, 1.3rem)",
+              color: "var(--ink-soft)",
+              lineHeight: 1.8,
+              marginTop: "32px",
+              textAlign: "left",
+            }}
+          >
+            DS 최고 밴드 동호회 Spectrum이 주최하고, DX 최고 밴드 동호회 Starwars가 함께하는 킹갓제네럴엠페러 연합공연 SSF입니다. (Samsung Sound Festival 아님!) 최고 동호회끼리 소통하고 화합하는 자리를 만들기 위해 양 쪽 운영진이 뭉쳤습니다. 즐거운 시간 보내시길 바랍니다!
           </p>
         </div>
       </section>
@@ -167,7 +183,7 @@ export default function Home() {
                           </h4>
                           <p
                             style={{
-                              fontSize: "1rem",
+                              fontSize: "clamp(0.9rem, 3vw, 1.3rem)",
                               color: "var(--ink-muted)",
                               margin: 0,
                               lineHeight: 1.6,
