@@ -297,6 +297,12 @@ export default function NamingSection() {
 
                     <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
                       <button
+                        onClick={() => handleLike(entry.id)}
+                        className={`like-btn${liked ? " like-btn-liked" : ""}`}
+                      >
+                        ♥ {entry.likes}
+                      </button>
+                      <button
                         onClick={() => { setDeleteTarget(entry.id); setDeleteError(null); }}
                         disabled={deletingId === entry.id}
                         className="btn-open"
@@ -312,12 +318,6 @@ export default function NamingSection() {
                         }}
                       >
                         삭제
-                      </button>
-                      <button
-                        onClick={() => handleLike(entry.id)}
-                        className={`like-btn${liked ? " like-btn-liked" : ""}`}
-                      >
-                        ♥ {entry.likes}
                       </button>
                     </div>
                   </div>
