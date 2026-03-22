@@ -52,7 +52,7 @@ export default function ParallaxBg() {
     top: 0,
     left: 0,
     width: "100%",
-    height: "140vh",
+    height: "140lvh",
     backgroundSize: "cover",
     backgroundPosition: "center top",
     backgroundRepeat: "no-repeat",
