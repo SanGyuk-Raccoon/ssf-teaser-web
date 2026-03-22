@@ -4,10 +4,18 @@
 /* ── Design tokens ─────────────────────────────────────────────── */
 :root {
   --cream:        #faf6ef;
-  --cream-dark:   #f0e9dc;
+  --cream-mid:    #f4ede0;
+  --cream-dark:   #ede2d0;
+  --cream-muted:  #e6d9c8;
+
   --ink:          #1a1008;
   --ink-soft:     #4a3728;
-  --ink-muted:    #8a7060;
+  --ink-muted:    #9a8878;
+
+  /* section band alternates */
+  --band-a:       #faf6ef;   /* cream */
+  --band-b:       #f4ede0;   /* warm ivory */
+  --band-dark:    #1f1710;   /* near-black warm */
 
   --rainbow-red:    #e8352a;
   --rainbow-orange: #f47c20;
@@ -34,13 +42,16 @@
     var(--rainbow-purple) 100%
   );
 
-  --sketch-shadow: 3px 3px 0 var(--ink);
-  --sketch-shadow-lg: 5px 5px 0 var(--ink);
   --font-display: "Boogaloo", cursive;
   --font-body:    "Baloo 2", system-ui, sans-serif;
+
+  /* soft shadow only — no hard sketch offset */
+  --soft-shadow:   0 2px 16px rgba(26,16,8,0.07);
+  --soft-shadow-md: 0 4px 32px rgba(26,16,8,0.10);
+  --soft-shadow-lg: 0 8px 48px rgba(26,16,8,0.13);
 }
 
-/* ── Base ─────────────────────────────────────────────────────── */
+/* ── Reset ─────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -51,9 +62,6 @@ body {
   font-family: var(--font-body);
   font-weight: 500;
   min-height: 100vh;
-  /* subtle paper grain using SVG noise */
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
 
 /* ── Typography helpers ───────────────────────────────────────── */
@@ -71,66 +79,71 @@ body {
 .rainbow-bar {
   height: 4px;
   background: var(--rainbow-gradient);
-  border-radius: 9999px;
 }
 
-.rainbow-border {
-  border-image: var(--rainbow-gradient) 1;
-}
-
-/* ── Sketch card ──────────────────────────────────────────────── */
-.sketch-card {
+/* ── Open card — no border, soft shadow, rounded ─────────────── */
+.open-card {
   background: #fff;
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: var(--sketch-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  border-radius: 20px;
+  box-shadow: var(--soft-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.sketch-card:hover {
-  box-shadow: var(--sketch-shadow-lg);
-  transform: translate(-1px, -1px);
+.open-card:hover {
+  box-shadow: var(--soft-shadow-md);
+  transform: translateY(-2px);
 }
 
-.sketch-card-cream {
-  background: var(--cream);
-  border: 2.5px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: var(--sketch-shadow);
+.open-card-cream {
+  background: var(--cream-mid);
+  border-radius: 20px;
+  box-shadow: var(--soft-shadow);
 }
 
-/* ── Sketch button ────────────────────────────────────────────── */
-.btn-sketch {
+/* ── Open button ──────────────────────────────────────────────── */
+.btn-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
-  box-shadow: var(--sketch-shadow);
+  border: none;
+  border-radius: 100px;
   font-family: var(--font-body);
   font-weight: 700;
-  transition: box-shadow 0.12s ease, transform 0.12s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
 }
 
-.btn-sketch:active {
-  box-shadow: 1px 1px 0 var(--ink);
-  transform: translate(2px, 2px);
+.btn-open:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-open:active {
+  transform: translateY(1px);
+  opacity: 1;
 }
 
 .btn-rainbow {
   background: var(--rainbow-gradient);
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  box-shadow: var(--soft-shadow-md);
 }
 
-.btn-outline {
-  background: var(--cream);
+.btn-ghost {
+  background: transparent;
   color: var(--ink);
+  border: 1.5px solid var(--cream-dark);
 }
 
-.btn-outline:hover {
-  background: var(--cream-dark);
+.btn-ghost:hover {
+  background: var(--cream-mid);
+  border-color: var(--cream-muted);
+}
+
+.btn-solid {
+  background: var(--ink);
+  color: var(--cream);
 }
 
 /* ── Nav ──────────────────────────────────────────────────────── */
@@ -138,30 +151,28 @@ body {
   font-family: var(--font-body);
   font-weight: 700;
   color: var(--ink-soft);
-  padding: 6px 14px;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  padding: 6px 18px;
+  border-radius: 100px;
+  border: none;
+  transition: background 0.15s, color 0.15s;
   text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .nav-link:hover {
-  border-color: var(--ink);
-  background: var(--cream-dark);
+  background: var(--cream-mid);
   color: var(--ink);
 }
 
 .nav-link.active {
-  border-color: var(--ink);
   background: var(--ink);
   color: var(--cream);
 }
 
 /* ── Progress bar ─────────────────────────────────────────────── */
 .progress-track {
-  height: 10px;
+  height: 8px;
   background: var(--cream-dark);
-  border: 2px solid var(--ink);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -178,77 +189,60 @@ body {
 
 .progress-fill-default {
   background: var(--ink-muted);
+  opacity: 0.5;
 }
 
 /* ── Club badges ──────────────────────────────────────────────── */
 .badge-starwars {
   background: var(--starwars-bg);
   color: var(--starwars-text);
-  border: 1.5px solid var(--starwars-border);
   border-radius: 9999px;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 1px 8px;
+  padding: 2px 10px;
   font-family: var(--font-body);
+  letter-spacing: 0.03em;
 }
 
 .badge-spectrum {
   background: var(--spectrum-bg);
   color: var(--spectrum-text);
-  border: 1.5px solid var(--spectrum-border);
   border-radius: 9999px;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 1px 8px;
+  padding: 2px 10px;
   font-family: var(--font-body);
+  letter-spacing: 0.03em;
 }
 
 /* ── Form elements ────────────────────────────────────────────── */
-.sketch-input {
+.open-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 14px 20px;
   background: #fff;
-  border: 2.5px solid var(--ink);
-  border-radius: 10px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 14px;
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 500;
   color: var(--ink);
-  box-shadow: var(--sketch-shadow);
-  transition: box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
   outline: none;
 }
 
-.sketch-input::placeholder {
+.open-input::placeholder {
   color: var(--ink-muted);
 }
 
-.sketch-input:focus {
-  box-shadow: 5px 5px 0 var(--ink);
-}
-
-/* ── Doodle divider ───────────────────────────────────────────── */
-.doodle-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 8px 0;
-}
-
-.doodle-divider::before,
-.doodle-divider::after {
-  content: "";
-  flex: 1;
-  height: 2px;
-  background: var(--ink);
-  border-radius: 9999px;
-  opacity: 0.2;
+.open-input:focus {
+  border-color: var(--ink-muted);
+  box-shadow: 0 0 0 3px rgba(26,16,8,0.06);
 }
 
 /* ── Section heading ──────────────────────────────────────────── */
 .section-heading {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   letter-spacing: 0.02em;
   color: var(--ink);
   position: relative;
@@ -258,7 +252,26 @@ body {
 .section-heading::after {
   content: "";
   display: block;
-  margin-top: 4px;
+  margin-top: 6px;
+  height: 4px;
+  background: var(--rainbow-gradient);
+  border-radius: 9999px;
+}
+
+/* dark-band version */
+.section-heading-light {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  letter-spacing: 0.02em;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+}
+
+.section-heading-light::after {
+  content: "";
+  display: block;
+  margin-top: 6px;
   height: 4px;
   background: var(--rainbow-gradient);
   border-radius: 9999px;
@@ -267,7 +280,7 @@ body {
 /* ── Pulse dot ────────────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.6; transform: scale(1.4); }
+  50%       { opacity: 0.6; transform: scale(1.5); }
 }
 
 .pulse-dot {
@@ -277,35 +290,129 @@ body {
   background: #22c55e;
   animation: pulse-dot 1.4s ease-in-out infinite;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 /* ── Wiggle on hover (nav SSF logo) ──────────────────────────── */
 @keyframes wiggle {
-  0%, 100% { transform: rotate(-2deg); }
-  50%       { transform: rotate(2deg); }
+  0%, 100% { transform: rotate(-3deg); }
+  50%       { transform: rotate(3deg); }
 }
 
 .wiggle:hover {
-  animation: wiggle 0.4s ease-in-out 2;
-}
-
-/* ── Streak doodle lines (decorative) ────────────────────────── */
-.streak {
-  position: absolute;
-  height: 6px;
-  border-radius: 9999px;
-  opacity: 0.55;
-  pointer-events: none;
+  animation: wiggle 0.35s ease-in-out 2;
 }
 
 /* ── Tier heading tag ─────────────────────────────────────────── */
 .tier-tag {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: var(--ink);
   color: var(--cream);
-  padding: 2px 16px 4px;
-  border-radius: 6px;
-  letter-spacing: 0.04em;
+  padding: 3px 18px 5px;
+  border-radius: 100px;
+  letter-spacing: 0.06em;
+}
+
+/* ── Vote row ─────────────────────────────────────────────────── */
+.vote-row {
+  width: 100%;
+  text-align: left;
+  padding: 18px 22px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background: #fff;
+  box-shadow: var(--soft-shadow);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  font-family: var(--font-body);
+}
+
+.vote-row:hover:not(:disabled) {
+  box-shadow: var(--soft-shadow-md);
+  transform: translateY(-2px);
+}
+
+.vote-row:disabled {
+  cursor: default;
+}
+
+.vote-row-voted {
+  background: #fffbf5;
+  border-color: var(--rainbow-orange);
+  box-shadow: 0 2px 16px rgba(244,124,32,0.15);
+}
+
+/* ── Naming entry row ─────────────────────────────────────────── */
+.entry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--soft-shadow);
+  transition: box-shadow 0.15s ease;
+}
+
+.entry-row-top {
+  background: #fffbe8;
+  box-shadow: 0 2px 16px rgba(245,200,0,0.15);
+}
+
+/* ── Tab pill ─────────────────────────────────────────────────── */
+.tab-pill {
+  padding: 8px 22px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  background: var(--cream-mid);
+  color: var(--ink-soft);
+}
+
+.tab-pill:hover {
+  background: var(--cream-dark);
+  color: var(--ink);
+}
+
+.tab-pill-active {
+  background: var(--ink);
+  color: var(--cream);
+  box-shadow: var(--soft-shadow);
+}
+
+/* ── Like button ──────────────────────────────────────────────── */
+.like-btn {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  border-radius: 100px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--cream);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.like-btn:hover:not(:disabled) {
+  background: #fff0ee;
+  border-color: var(--rainbow-red);
+  color: var(--rainbow-red);
+}
+
+.like-btn-liked {
+  background: #fff0ee;
+  border-color: var(--rainbow-red);
+  color: var(--rainbow-red);
+  cursor: default;
 }

@@ -1,0 +1,186 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774154599489,
+  "projectRoot": "D:\\workspace\\ssf-teaser-web",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "16.2.1",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.2.4",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.4",
+        "category": "frontend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "data": {
+      "path": "data",
+      "purpose": "Data files",
+      "fileCount": 0,
+      "lastAccessed": 1774154599452,
+      "keyFiles": []
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 3,
+      "lastAccessed": 1774154599453,
+      "keyFiles": [
+        "background.png",
+        "placeholder-team.svg",
+        "ssf-main-poster.png"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1774154599460,
+      "keyFiles": []
+    },
+    "src\\app": {
+      "path": "src\\app",
+      "purpose": "Application code",
+      "fileCount": 3,
+      "lastAccessed": 1774154599462,
+      "keyFiles": [
+        "globals.css",
+        "layout.tsx",
+        "page.tsx"
+      ]
+    },
+    "src\\components": {
+      "path": "src\\components",
+      "purpose": "UI components",
+      "fileCount": 1,
+      "lastAccessed": 1774154599462,
+      "keyFiles": [
+        "Credits.tsx"
+      ]
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 4,
+      "lastAccessed": 1774154599462,
+      "keyFiles": [
+        "data.ts",
+        "storage.ts",
+        "store.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src\\app\\page.tsx",
+      "accessCount": 15,
+      "lastAccessed": 1774156031633,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\Credits.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1774155009461,
+      "type": "file"
+    },
+    {
+      "path": "src\\app\\layout.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1774155713546,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ParallaxBg.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1774156658781,
+      "type": "file"
+    },
+    {
+      "path": "public\\background.png",
+      "accessCount": 1,
+      "lastAccessed": 1774154639949,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-main.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774155519452,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-time.PNG",
+      "accessCount": 1,
+      "lastAccessed": 1774155519816,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-bg1.png",
+      "accessCount": 1,
+      "lastAccessed": 1774156594152,
+      "type": "file"
+    },
+    {
+      "path": "public\\ssf-bg0.png",
+      "accessCount": 1,
+      "lastAccessed": 1774156595734,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
