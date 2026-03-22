@@ -6,7 +6,7 @@ import { getSupabase } from "@/lib/supabase";
 import { hasVotedTier, markVotedTier } from "@/lib/storage";
 
 const SCORE_GUIDES: Record<string, { 1: string; 3: string; 5: string }> = {
-  "신입": { 1: "신입 가이드 1점", 3: "신입 가이드 3점", 5: "신입 가이드 5점" },
+  "신입": { 1: "파이팅하자!", 3: "크...옛날 생각난다.", 5: "으구 이뻐~ 뽀뽀 쪽~" },
   "YB":  { 1: "YB 가이드 1점", 3: "YB 가이드 3점", 5: "YB 가이드 5점" },
   "OB":  { 1: "OB 가이드 1점", 3: "OB 가이드 3점", 5: "OB 가이드 5점" },
 };
