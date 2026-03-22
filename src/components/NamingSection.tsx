@@ -5,8 +5,7 @@ import { getSupabase } from "@/lib/supabase";
 import {
   hasLikedEntry,
   markLikedEntry,
-  hasSubmittedNaming,
-  markNamingSubmitted,
+  removeLikedEntry,
 } from "@/lib/storage";
 
 interface Entry {
@@ -23,7 +22,6 @@ export default function NamingSection() {
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const fetchEntries = useCallback(async () => {
@@ -37,14 +35,13 @@ export default function NamingSection() {
 
   useEffect(() => {
     fetchEntries();
-    setSubmitted(hasSubmittedNaming());
     const interval = setInterval(fetchEntries, 5000);
     return () => clearInterval(interval);
   }, [fetchEntries]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !password.trim() || submitting || submitted) return;
+    if (!title.trim() || !password.trim() || submitting) return;
     setSubmitting(true);
     try {
       const supabase = getSupabase();
@@ -52,8 +49,6 @@ export default function NamingSection() {
         .from("naming_entries")
         .insert({ title: title.trim(), password: password.trim() });
       if (!error) {
-        markNamingSubmitted();
-        setSubmitted(true);
         setTitle("");
         setPassword("");
         await fetchEntries();
@@ -64,17 +59,27 @@ export default function NamingSection() {
   };
 
   const handleLike = async (entryId: number) => {
-    if (hasLikedEntry(String(entryId))) return;
-    markLikedEntry(String(entryId));
+    const liked = hasLikedEntry(String(entryId));
     const supabase = getSupabase();
     const entry = entries.find((e) => e.id === entryId);
-    if (entry) {
+    if (!entry) return;
+
+    if (liked) {
+      // 추천 취소
+      removeLikedEntry(String(entryId));
+      await supabase
+        .from("naming_entries")
+        .update({ likes: Math.max(0, entry.likes - 1) })
+        .eq("id", entryId);
+    } else {
+      // 추천
+      markLikedEntry(String(entryId));
       await supabase
         .from("naming_entries")
         .update({ likes: entry.likes + 1 })
         .eq("id", entryId);
-      await fetchEntries();
     }
+    await fetchEntries();
   };
 
   const handleDelete = async (entryId: number) => {
@@ -117,9 +122,8 @@ export default function NamingSection() {
         가장 많은 추천을 받은 이름에 선물을 드립니다.
       </p>
 
-      {/* Submit form / submitted state */}
-      {!submitted ? (
-        <form
+      {/* Submit form */}
+      <form
           onSubmit={handleSubmit}
           style={{
             background: "var(--cream-mid)",
@@ -175,36 +179,6 @@ export default function NamingSection() {
             {submitting ? "등록 중..." : "이름 등록하기"}
           </button>
         </form>
-      ) : (
-        <div
-          style={{
-            background: "var(--cream-mid)",
-            borderRadius: "20px",
-            padding: "36px 24px",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <span style={{ fontSize: "2rem" }}>🎉</span>
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontWeight: 700,
-              fontSize: "1rem",
-              color: "var(--ink)",
-              margin: 0,
-            }}
-          >
-            이름을 등록해주셨습니다!
-          </p>
-          <p style={{ fontSize: "0.85rem", color: "var(--ink-muted)", margin: 0 }}>
-            아래 목록에서 마음에 드는 이름을 추천해주세요.
-          </p>
-        </div>
-      )}
 
       {/* Entries list */}
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -326,7 +300,6 @@ export default function NamingSection() {
                   </button>
                   <button
                     onClick={() => handleLike(entry.id)}
-                    disabled={liked}
                     className={`like-btn${liked ? " like-btn-liked" : ""}`}
                   >
                     ♥ {entry.likes}

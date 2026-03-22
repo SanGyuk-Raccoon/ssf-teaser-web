@@ -20,6 +20,10 @@ export function markLikedEntry(entryId: string): void {
   localStorage.setItem(`${STORAGE_PREFIX}like-${entryId}`, "1");
 }
 
+export function removeLikedEntry(entryId: string): void {
+  localStorage.removeItem(`${STORAGE_PREFIX}like-${entryId}`);
+}
+
 export function hasSubmittedNaming(): boolean {
   if (typeof window === "undefined") return false;
   return localStorage.getItem(`${STORAGE_PREFIX}naming-submitted`) !== null;
