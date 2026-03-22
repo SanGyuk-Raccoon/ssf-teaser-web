@@ -206,21 +206,27 @@ export default function VoteSection() {
                   {/* Guide text */}
                   {SCORE_GUIDES[tier] && (
                     <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0 0", marginTop: "2px" }}>
-                      {[1, 3, 5].map((s) => (
-                        <span
-                          key={s}
-                          style={{
-                            width: "33%",
-                            textAlign: s === 1 ? "left" : s === 5 ? "right" : "center",
-                            fontSize: "0.7rem",
-                            fontFamily: "var(--font-body)",
-                            color: "var(--ink-muted)",
-                            lineHeight: 1.3,
-                          }}
-                        >
-                          {SCORE_GUIDES[tier][s as 1 | 3 | 5]}
-                        </span>
-                      ))}
+                      {[1, 3, 5].map((s) => {
+                        const nearest = score <= 0 ? 0 : score <= 2 ? 1 : score <= 4 ? 3 : 5;
+                        const active = nearest === s;
+                        return (
+                          <span
+                            key={s}
+                            style={{
+                              width: "33%",
+                              textAlign: s === 1 ? "left" : s === 5 ? "right" : "center",
+                              fontSize: active ? "0.8rem" : "0.7rem",
+                              fontFamily: "var(--font-body)",
+                              color: active ? "var(--ink)" : "var(--ink-muted)",
+                              fontWeight: active ? 700 : 400,
+                              lineHeight: 1.3,
+                              transition: "all 0.15s ease",
+                            }}
+                          >
+                            {SCORE_GUIDES[tier][s as 1 | 3 | 5]}
+                          </span>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
