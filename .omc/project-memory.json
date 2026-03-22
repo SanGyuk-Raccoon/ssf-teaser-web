@@ -129,8 +129,8 @@
   "hotPaths": [
     {
       "path": "src\\app\\page.tsx",
-      "accessCount": 54,
-      "lastAccessed": 1774160264185,
+      "accessCount": 56,
+      "lastAccessed": 1774160481268,
       "type": "file"
     },
     {
@@ -227,6 +227,12 @@
       "path": "public\\ssf-spaceship1.PNG",
       "accessCount": 1,
       "lastAccessed": 1774158123376,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\HeroZoom.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774160470540,
       "type": "file"
     }
   ],

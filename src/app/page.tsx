@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { teams, TIERS } from "@/lib/data";
-
+import HeroZoom from "@/components/HeroZoom";
 
 export default function Home() {
   return (
@@ -17,40 +17,7 @@ export default function Home() {
           padding: "100px 24px 80px",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {/* SSF Logo */}
-          <Image
-            src="/ssf-main.PNG"
-            alt="Spectrum Starwars Festival"
-            width={500}
-            height={280}
-            priority
-            style={{
-              width: "clamp(300px, 85vw, 600px)",
-              height: "auto",
-              marginBottom: "32px",
-            }}
-          />
-
-          {/* Date + Time */}
-          <Image
-            src="/ssf-time.PNG"
-            alt="2026 APRIL 04/18 16:00"
-            width={300}
-            height={120}
-            style={{
-              width: "clamp(160px, 40vw, 280px)",
-              height: "auto",
-              marginBottom: "12px",
-            }}
-          />
-        </div>
+        <HeroZoom />
       </section>
 
       {/* ── Catchphrase ────────────────────────────────────────── */}
