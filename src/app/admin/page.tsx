@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { TIERS } from "@/lib/data";
+import { getSupabase } from "@/lib/supabase";
 
 interface VoteData {
   results: Record<string, { total: number; count: number; avg: number }>;
@@ -9,28 +10,75 @@ interface VoteData {
   status: Record<string, boolean>;
 }
 
+interface NamingEntry {
+  id: number;
+  title: string;
+  password: string;
+  likes: number;
+  created_at: string;
+}
+
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [data, setData] = useState<VoteData | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [namingEntries, setNamingEntries] = useState<NamingEntry[]>([]);
 
   const fetchData = useCallback(async () => {
-    const res = await fetch("/api/vote");
-    setData(await res.json());
+    const supabase = getSupabase();
+    const [votesRes, statusRes] = await Promise.all([
+      supabase.from("votes").select("tier, score"),
+      supabase.from("vote_status").select("tier, is_open"),
+    ]);
+    const results: Record<string, { total: number; count: number; avg: number }> = {};
+    let maxVoters = 0;
+    for (const tier of TIERS) {
+      const scores = (votesRes.data ?? []).filter((v) => v.tier === tier).map((v) => v.score);
+      const total = scores.reduce((s, v) => s + v, 0);
+      const count = scores.length;
+      results[tier] = { total, count, avg: count > 0 ? Math.round((total / count) * 10) / 10 : 0 };
+      if (count > maxVoters) maxVoters = count;
+    }
+    const status: Record<string, boolean> = {};
+    for (const row of statusRes.data ?? []) {
+      status[row.tier] = row.is_open;
+    }
+    setData({ results, totalVoters: maxVoters, status });
   }, []);
+
+  const fetchNaming = useCallback(async () => {
+    const res = await fetch("/api/naming/admin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (res.ok) setNamingEntries(await res.json());
+  }, [password]);
 
   useEffect(() => {
     if (authenticated) {
       fetchData();
-      const interval = setInterval(fetchData, 3000);
+      fetchNaming();
+      const interval = setInterval(() => { fetchData(); fetchNaming(); }, 3000);
       return () => clearInterval(interval);
     }
-  }, [authenticated, fetchData]);
+  }, [authenticated, fetchData, fetchNaming]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password) setAuthenticated(true);
+  };
+
+  const deleteNaming = async (entryId: number) => {
+    if (!confirm("이 항목을 삭제하시겠습니까?")) return;
+    const res = await fetch("/api/naming/admin", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, entryId }),
+    });
+    if (res.ok) await fetchNaming();
+    else alert("삭제 실패");
   };
 
   const toggleVote = async (tier: string) => {
@@ -248,6 +296,91 @@ export default function AdminPage() {
               );
             })}
           </div>
+        </section>
+
+        {/* Naming entries */}
+        <section
+          style={{
+            background: "#fff",
+            borderRadius: "24px",
+            padding: "28px 28px",
+            boxShadow: "var(--soft-shadow)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "18px",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "1.2rem",
+              color: "var(--ink)",
+              margin: 0,
+            }}
+          >
+            이름 공모 ({namingEntries.length}개)
+          </h2>
+          {namingEntries.length === 0 ? (
+            <p style={{ color: "var(--ink-muted)", fontSize: "0.9rem", margin: 0 }}>
+              등록된 항목이 없습니다.
+            </p>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {namingEntries.map((entry) => (
+                <div
+                  key={entry.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "12px 16px",
+                    borderRadius: "14px",
+                    background: "var(--cream-mid)",
+                    gap: "12px",
+                  }}
+                >
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <p
+                      style={{
+                        fontWeight: 700,
+                        fontSize: "0.95rem",
+                        color: "var(--ink)",
+                        margin: 0,
+                        fontFamily: "var(--font-body)",
+                      }}
+                    >
+                      {entry.title}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--ink-muted)",
+                        margin: 0,
+                        marginTop: "2px",
+                        fontFamily: "var(--font-body)",
+                      }}
+                    >
+                      비밀번호: {entry.password} &middot; 추천 {entry.likes}개
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => deleteNaming(entry.id)}
+                    className="btn-open"
+                    style={{
+                      padding: "6px 14px",
+                      fontSize: "0.8rem",
+                      borderRadius: "10px",
+                      background: "#fee2e2",
+                      color: "#dc2626",
+                      flexShrink: 0,
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Results */}

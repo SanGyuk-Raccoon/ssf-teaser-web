@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { TIERS } from "@/lib/data";
+import { getSupabase } from "@/lib/supabase";
 
 const STORAGE_PREFIX = "ssf-teaser-";
 
@@ -14,10 +15,6 @@ function markVotedTier(tier: string): void {
   localStorage.setItem(`${STORAGE_PREFIX}vote-${tier}`, "1");
 }
 
-interface VoteStatus {
-  status: Record<string, boolean>;
-}
-
 export default function VoteSection() {
   const [status, setStatus] = useState<Record<string, boolean>>({});
   const [scores, setScores] = useState<Record<string, number>>({});
@@ -25,9 +22,15 @@ export default function VoteSection() {
   const [submitting, setSubmitting] = useState<string | null>(null);
 
   const fetchStatus = useCallback(async () => {
-    const res = await fetch("/api/vote");
-    const data: VoteStatus = await res.json();
-    setStatus(data.status);
+    const supabase = getSupabase();
+    const { data } = await supabase
+      .from("vote_status")
+      .select("tier, is_open");
+    const s: Record<string, boolean> = {};
+    for (const row of data ?? []) {
+      s[row.tier] = row.is_open;
+    }
+    setStatus(s);
   }, []);
 
   useEffect(() => {
@@ -50,16 +53,8 @@ export default function VoteSection() {
     if (submitting || submitted[tier] || !scores[tier]) return;
     setSubmitting(tier);
     try {
-      const tierScores: Record<string, number> = {};
-      for (const t of TIERS) {
-        tierScores[t] = t === tier ? scores[tier] : 0;
-      }
-      // Send only this tier's score
-      await fetch("/api/vote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier, score: scores[tier] }),
-      });
+      const supabase = getSupabase();
+      await supabase.from("votes").insert({ tier, score: scores[tier] });
       markVotedTier(tier);
       setSubmitted((prev) => ({ ...prev, [tier]: true }));
     } finally {
