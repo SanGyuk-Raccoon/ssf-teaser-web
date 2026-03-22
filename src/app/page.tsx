@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { teams, TIERS } from "@/lib/data";
 import HeroZoom from "@/components/HeroZoom";
 import VoteSection from "@/components/VoteSection";
 import NamingSection from "@/components/NamingSection";
 import DirectionsSection from "@/components/DirectionsSection";
+import TeamImage from "@/components/TeamImage";
 
 export default function Home() {
   return (
@@ -121,23 +121,7 @@ export default function Home() {
                           alignSelf: isStarwars ? "flex-start" : "flex-end",
                         }}
                       >
-                        <div
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                            aspectRatio: "1 / 1",
-                            borderRadius: "16px",
-                            overflow: "hidden",
-                            border: "1.5px solid rgba(0,0,0,0.08)",
-                          }}
-                        >
-                          <Image
-                            src={team.imageUrl}
-                            alt={team.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
+                        <TeamImage src={team.imageUrl} alt={team.name} />
                         <div style={{ width: "100%", textAlign: isStarwars ? "left" : "right" }}>
                           <h4
                             style={{
