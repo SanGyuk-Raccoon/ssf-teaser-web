@@ -14,8 +14,8 @@ interface FloatingItem {
 }
 
 const floatingItems: FloatingItem[] = [
-  { src: "/ssf-guitar.PNG", width: "clamp(350px, 95vw, 900px)", top: "15%", left: "2%", speed: -0.05, opacity: 1, rotate: -15 },
-  { src: "/ssf-mic.PNG", width: "clamp(300px, 85vw, 700px)", top: "90%", left: "45%", speed: -0.2, opacity: 1, rotate: 10 },
+  { src: "/ssf-guitar.webp", width: "clamp(350px, 95vw, 900px)", top: "15%", left: "2%", speed: -0.05, opacity: 1, rotate: -15 },
+  { src: "/ssf-mic.webp", width: "clamp(300px, 85vw, 700px)", top: "90%", left: "45%", speed: -0.2, opacity: 1, rotate: 10 },
 ];
 
 export default function ParallaxBg() {
@@ -75,7 +75,7 @@ export default function ParallaxBg() {
         style={{
           ...baseStyle,
           zIndex: -3,
-          backgroundImage: "url('/ssf-bg1.png')",
+          backgroundImage: "url('/ssf-bg1.webp')",
           opacity: 0.5,
         }}
       />
@@ -86,7 +86,7 @@ export default function ParallaxBg() {
         style={{
           ...baseStyle,
           zIndex: -2,
-          backgroundImage: "url('/ssf-bg0.png')",
+          backgroundImage: "url('/ssf-bg0.webp')",
           opacity: 0.45,
         }}
       />
@@ -115,7 +115,7 @@ export default function ParallaxBg() {
       {/* Moon — rises from bottom on scroll */}
       <img
         ref={moonRef}
-        src="/ssf-bg2.png"
+        src="/ssf-bg2.webp"
         alt=""
         aria-hidden="true"
         style={{
@@ -133,7 +133,7 @@ export default function ParallaxBg() {
       />
       {/* Planet — floating */}
       <img
-        src="/ssf-planet.PNG"
+        src="/ssf-planet.webp"
         alt=""
         aria-hidden="true"
         className="planet-float"
@@ -145,7 +145,7 @@ export default function ParallaxBg() {
         }}
       />
       <img
-        src="/ssf-planet.PNG"
+        src="/ssf-planet.webp"
         alt=""
         aria-hidden="true"
         className="planet-float"
@@ -159,7 +159,7 @@ export default function ParallaxBg() {
       />
       {/* Spaceships — continuous CSS animation */}
       <img
-        src="/ssf-spaceship0.PNG"
+        src="/ssf-spaceship0.webp"
         alt=""
         aria-hidden="true"
         className="spaceship-left"
@@ -170,7 +170,7 @@ export default function ParallaxBg() {
         }}
       />
       <img
-        src="/ssf-spaceship1.PNG"
+        src="/ssf-spaceship1.webp"
         alt=""
         aria-hidden="true"
         className="spaceship-right"

@@ -38,7 +38,18 @@ export default function HeroZoom() {
       }}
     >
       <Image
-        src="/ssf-main.PNG"
+        src="/line.webp"
+        alt="SSF line"
+        width={500}
+        height={100}
+        style={{
+          width: "clamp(300px, 85vw, 600px)",
+          height: "auto",
+          marginBottom: "16px",
+        }}
+      />
+      <Image
+        src="/ssf-main.webp"
         alt="Spectrum Starwars Festival"
         width={500}
         height={280}
@@ -50,7 +61,7 @@ export default function HeroZoom() {
         }}
       />
       <Image
-        src="/ssf-time.PNG"
+        src="/ssf-time.webp"
         alt="2026 APRIL 04/18 16:00"
         width={300}
         height={120}

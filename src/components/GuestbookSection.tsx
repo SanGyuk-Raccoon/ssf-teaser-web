@@ -146,8 +146,8 @@ export default function GuestbookSection() {
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="메시지를 입력하세요 (최대 200자)"
-          maxLength={200}
+          placeholder="메시지를 입력하세요 (최대 100자)"
+          maxLength={100}
           className="open-input"
           rows={3}
           style={{ resize: "none" }}

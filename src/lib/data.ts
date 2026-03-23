@@ -52,7 +52,7 @@ export const teams: Team[] = [
     tier: "OB",
     name: "Spectrum OB | unevens",
     description: "2018년부터 함께하고 있는 unevens입니다. 이름처럼 even하지 않은 음악을 추구합니다. 희노애락을 한데 뒤섞어 들려드리겠습니다.",
-    imageUrl: "/unevens.jpg",
+    imageUrl: "/unevens.webp",
     order: 6,
   },
 ];
