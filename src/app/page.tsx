@@ -127,18 +127,41 @@ export default function Home() {
                       >
                         <TeamImage src={team.imageUrl} alt={team.name} />
                         <div style={{ width: "100%", textAlign: isStarwars ? "left" : "right" }}>
-                          <h4
-                            style={{
-                              fontFamily: "var(--font-body)",
-                              fontWeight: 700,
-                              fontSize: "2.0rem",
-                              color: "var(--ink)",
-                              margin: 0,
-                              marginBottom: "4px",
-                            }}
-                          >
-                            {team.name}
-                          </h4>
+                          {(() => {
+                            const parts = team.name.split(" | ");
+                            const tag = parts.length > 1 ? parts[0] : null;
+                            const displayName = parts.length > 1 ? parts[1] : parts[0];
+                            return (
+                              <>
+                                {tag && (
+                                  <span
+                                    style={{
+                                      fontFamily: "var(--font-body)",
+                                      fontSize: "0.8rem",
+                                      fontWeight: 500,
+                                      color: "var(--ink-muted)",
+                                      display: "block",
+                                      marginBottom: "2px",
+                                    }}
+                                  >
+                                    {tag}
+                                  </span>
+                                )}
+                                <h4
+                                  style={{
+                                    fontFamily: "var(--font-body)",
+                                    fontWeight: 700,
+                                    fontSize: "2.0rem",
+                                    color: "var(--ink)",
+                                    margin: 0,
+                                    marginBottom: "4px",
+                                  }}
+                                >
+                                  {displayName}
+                                </h4>
+                              </>
+                            );
+                          })()}
                           <p
                             style={{
                               fontSize: "clamp(0.9rem, 3vw, 1.3rem)",
