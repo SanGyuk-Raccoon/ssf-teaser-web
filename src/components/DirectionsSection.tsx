@@ -4,7 +4,7 @@ const ADDRESS = "경기 수원시 팔달구 행궁로 88 지하1층";
 const VENUE = "남문 로데오 아트홀";
 const ENCODED_QUERY = encodeURIComponent(`${ADDRESS} ${VENUE}`);
 
-const MAP_EMBED_URL = `https://www.google.com/maps?q=${ENCODED_QUERY}&output=embed`;
+const MAP_EMBED_URL = `https://map.naver.com/p/entry/place/327546150?c=15.00,0,0,0,dh`;
 const NAVER_MAP_URL = "https://naver.me/xIeXk5bY";
 const KAKAO_MAP_URL = "https://place.map.kakao.com/327546150";
 
