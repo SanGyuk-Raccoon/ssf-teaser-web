@@ -196,7 +196,7 @@ export default function NamingSection() {
           </form>
 
           {/* Entries list */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "480px", overflowY: "auto" }}>
             <div
               style={{
                 display: "flex",
