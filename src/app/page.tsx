@@ -3,6 +3,7 @@ import HeroZoom from "@/components/HeroZoom";
 import VoteSection from "@/components/VoteSection";
 import NamingSection from "@/components/NamingSection";
 import DirectionsSection from "@/components/DirectionsSection";
+import GuestbookSection from "@/components/GuestbookSection";
 import TeamImage from "@/components/TeamImage";
 
 export default function Home() {
@@ -44,17 +45,20 @@ export default function Home() {
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(1.5rem, 5vw, 2.4rem)",
+              fontWeight: 700,
               color: "var(--ink)",
               lineHeight: 1.5,
             }}
           >
-            <span style={{ fontSize: "clamp(3rem, 10vw, 5rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201C"}</span>
+            <span style={{ fontSize: "clamp(4rem, 14vw, 7rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201C"}</span>
             <br />
-            Spectrum과 Starwars가<br />
-            함께한다면<br />
-            그것도 SSF가 아닐까?<br />
+            S펙트럼과<br />
+            S타워즈가<br />
+            Fㅔ스티벌을<br />
+            연다면 그것도<br />
+            SSF가 아닐까?<br />
             <br />
-            <span style={{ fontSize: "clamp(3rem, 10vw, 5rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201D"}</span>
+            <span style={{ fontSize: "clamp(4rem, 14vw, 7rem)", lineHeight: 0.5, display: "block", fontFamily: "Georgia, serif" }}>{"\u201D"}</span>
           </p>
           <p
             style={{
@@ -63,10 +67,10 @@ export default function Home() {
               color: "var(--ink-soft)",
               lineHeight: 1.8,
               marginTop: "32px",
-              textAlign: "left",
+              textAlign: "center",
             }}
           >
-            DS 최고 밴드 동호회 Spectrum이 주최하고, DX 최고 밴드 동호회 Starwars가 함께하는 킹갓제네럴엠페러 연합공연 SSF입니다. (Samsung Sound Festival 아님!) 최고 동호회끼리 소통하고 화합하는 자리를 만들기 위해 양 쪽 운영진이 뭉쳤습니다. 즐거운 시간 보내시길 바랍니다!
+            삼성전자 DS부문 밴드 동호회 Spectrum이 주최하고, DX부문 밴드 동호회 Starwars가 함께하는 연합공연 SSF입니다. (Samsung Sound Festival 아님!) 삼성전자 밴드 동호회끼리 소통하고 화합하는 자리를 만들기 위해 양 쪽 운영진이 뭉쳤습니다. 즐거운 시간 보내시길 바랍니다!
           </p>
         </div>
       </section>
@@ -127,7 +131,7 @@ export default function Home() {
                             style={{
                               fontFamily: "var(--font-body)",
                               fontWeight: 700,
-                              fontSize: "1.3rem",
+                              fontSize: "2.0rem",
                               color: "var(--ink)",
                               margin: 0,
                               marginBottom: "4px",
@@ -209,6 +213,33 @@ export default function Home() {
             </h2>
           </div>
           <NamingSection />
+        </div>
+      </section>
+
+      {/* ── Guestbook ──────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "0 24px 100px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="glass-panel"
+          style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+                color: "var(--ink)",
+              }}
+            >
+              기대평
+            </h2>
+          </div>
+          <GuestbookSection />
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Boogaloo&family=Baloo+2:wght@400;500;600;700;800&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/leetaewook/gmarket-sans-dynamic-subset/GmarketSans.css");
 @import "tailwindcss";
 
 /* ── Design tokens ─────────────────────────────────────────────── */
@@ -42,8 +42,8 @@
     var(--rainbow-purple) 100%
   );
 
-  --font-display: "Boogaloo", cursive;
-  --font-body:    "Baloo 2", system-ui, sans-serif;
+  --font-display: "Gmarket Sans", system-ui, sans-serif;
+  --font-body:    "Gmarket Sans", system-ui, sans-serif;
 
   /* soft shadow only — no hard sketch offset */
   --soft-shadow:   0 2px 16px rgba(26,16,8,0.07);

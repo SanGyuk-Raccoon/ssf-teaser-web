@@ -4,9 +4,9 @@ export const teams: Team[] = [
   {
     id: "sw-freshman",
     club: "Starwars",
-    tier: "신입",
-    name: "Starwars 신입",
-    description: "Starwars 신입 팀입니다. 곧 소개가 업데이트됩니다.",
+    tier: "Rookie",
+    name: "Starwars Rookie",
+    description: "Starwars Rookie 팀입니다. 곧 소개가 업데이트됩니다.",
     imageUrl: "/placeholder-team.svg",
     order: 1,
   },
@@ -31,9 +31,9 @@ export const teams: Team[] = [
   {
     id: "sp-freshman",
     club: "Spectrum",
-    tier: "신입",
+    tier: "Rookie",
     name: "호록호록",
-    description: "Spectrum 신입 팀입니다. 곧 소개가 업데이트됩니다.",
+    description: "Spectrum Rookie 팀입니다. 곧 소개가 업데이트됩니다.",
     imageUrl: "/placeholder-team.svg",
     order: 4,
   },
@@ -50,11 +50,11 @@ export const teams: Team[] = [
     id: "sp-ob",
     club: "Spectrum",
     tier: "OB",
-    name: "unevens",
+    name: "Spectrum OB | unevens",
     description: "2018년부터 함께하고 있는 unevens입니다. 이름처럼 even하지 않은 음악을 추구합니다. 희노애락을 한데 뒤섞어 들려드리겠습니다.",
     imageUrl: "/unevens.jpg",
     order: 6,
   },
 ];
 
-export const TIERS = ["신입", "YB", "OB"] as const;
+export const TIERS = ["Rookie", "YB", "OB"] as const;

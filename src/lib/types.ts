@@ -1,7 +1,7 @@
 export interface Team {
   id: string;
   club: "Starwars" | "Spectrum";
-  tier: "신입" | "YB" | "OB";
+  tier: "Rookie" | "YB" | "OB";
   name: string;
   description: string;
   imageUrl: string;
@@ -9,7 +9,7 @@ export interface Team {
 }
 
 export interface Vote {
-  category: "신입" | "YB" | "OB";
+  category: "Rookie" | "YB" | "OB";
   teamId: string;
 }
 
@@ -37,7 +37,7 @@ export interface VoteData {
 }
 
 export interface VoteStatus {
-  신입: boolean;
+  Rookie: boolean;
   YB: boolean;
   OB: boolean;
 }
