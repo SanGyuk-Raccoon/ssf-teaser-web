@@ -139,7 +139,7 @@ export default function Home() {
                                       fontFamily: "var(--font-body)",
                                       fontSize: "0.8rem",
                                       fontWeight: 500,
-                                      color: "var(--ink-muted)",
+                                      color: "var(--ink)",
                                       display: "block",
                                       marginBottom: "2px",
                                     }}
