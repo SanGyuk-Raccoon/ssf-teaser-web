@@ -30,6 +30,7 @@ export default function TeamImage({ src, alt }: TeamImageProps) {
           src={src}
           alt={alt}
           fill
+          sizes="(max-width: 600px) 80vw, 480px"
           className="object-cover"
         />
       </div>

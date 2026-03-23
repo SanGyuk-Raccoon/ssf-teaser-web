@@ -196,6 +196,7 @@ export default function NamingSection() {
           </form>
 
           {/* Entries list */}
+          <div style={{ position: "relative" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "480px", overflowY: "auto" }}>
             <div
               style={{
@@ -324,6 +325,21 @@ export default function NamingSection() {
                 );
               })
             )}
+          </div>
+          {entries.length > 5 && (
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: "60px",
+                background: "linear-gradient(transparent, var(--cream))",
+                pointerEvents: "none",
+                borderRadius: "0 0 20px 20px",
+              }}
+            />
+          )}
           </div>
         </>
       ) : (

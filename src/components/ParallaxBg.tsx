@@ -59,10 +59,10 @@ export default function ParallaxBg() {
     top: 0,
     left: 0,
     width: "100%",
-    height: "140lvh",
+    height: "300lvh",
     backgroundSize: "cover",
     backgroundPosition: "center top",
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: "repeat-y",
     willChange: "transform",
   };
 
@@ -120,7 +120,7 @@ export default function ParallaxBg() {
         aria-hidden="true"
         style={{
           position: "fixed",
-          bottom: "-165%",
+          bottom: "-260%",
           left: "10%",
           transform: "none",
           width: "clamp(600px, 144vw, 1440px)",
