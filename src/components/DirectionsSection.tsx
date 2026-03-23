@@ -11,25 +11,24 @@ const KAKAO_MAP_URL = "https://place.map.kakao.com/327546150";
 export default function DirectionsSection() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      {/* Embedded map */}
+      {/* Venue info */}
       <div
         style={{
+          background: "var(--cream-mid)",
           borderRadius: "16px",
-          overflow: "hidden",
-          border: "1.5px solid rgba(0,0,0,0.08)",
-          aspectRatio: "4 / 3",
+          padding: "28px 24px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
         }}
       >
-        <iframe
-          src={MAP_EMBED_URL}
-          width="100%"
-          height="100%"
-          style={{ border: 0, display: "block" }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="지도"
-        />
+        <p style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 700, color: "var(--ink)", margin: 0 }}>
+          {VENUE}
+        </p>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: "0.9rem", color: "var(--ink-soft)", margin: 0, lineHeight: 1.6 }}>
+          {ADDRESS}
+        </p>
       </div>
 
       {/* Map app buttons */}
