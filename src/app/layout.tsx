@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "2026.04.18 남문 로데오 아트홀 | Spectrum/Starwars Festival",
   openGraph: {
     title: "SSF - Spectrum/Starwars Festival",
-    description: "2026.04.18 16:00 남문 로데오 아트홀",
+    description: "2026.04.18 16:30 남문 로데오 아트홀",
     images: ["/ssf-main-poster.png"],
   },
 };
