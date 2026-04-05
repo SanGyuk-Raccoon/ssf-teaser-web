@@ -52,8 +52,6 @@ export default function NamingSection() {
 
   useEffect(() => {
     fetchEntries();
-    const interval = setInterval(fetchEntries, 10000);
-    return () => clearInterval(interval);
   }, [fetchEntries]);
 
   const handleSubmit = async (e: React.FormEvent) => {

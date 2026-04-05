@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getSupabase } from "@/lib/supabase";
 import DeleteModal from "./DeleteModal";
 
@@ -20,66 +20,38 @@ export default function GuestbookSection() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const listRef = useRef<HTMLDivElement>(null);
-
-  const PAGE_SIZE = 50;
-
+  const [loading, setLoading] = useState(true);
+  // TODO: 테스트 후 원복 — 더미 데이터 1000개 + 10초 딜레이
+  const fetchEntries = useCallback(async () => {
+    await new Promise((r) => setTimeout(r, 10000));
+    const dummy = Array.from({ length: 1000 }, (_, i) => ({
+      id: 9000 + i,
+      nickname: `테스트유저${i + 1}`,
+      message: "가".repeat(100),
+      created_at: new Date(Date.now() - i * 60000).toISOString(),
+    }));
+    setEntries(dummy);
+    setLoading(false);
+  }, []);
+  /* 원본
   const fetchEntries = useCallback(async () => {
     const supabase = getSupabase();
     const { data, error } = await supabase
       .from("guestbook")
       .select("id, nickname, message, created_at")
-      .order("created_at", { ascending: false })
-      .range(0, PAGE_SIZE - 1);
+      .order("created_at", { ascending: false });
     if (error) {
       console.error("Failed to fetch guestbook:", error.message);
     } else {
       setEntries(data ?? []);
-      setHasMore((data?.length ?? 0) >= PAGE_SIZE);
     }
+    setLoading(false);
   }, []);
-
-  const fetchMore = useCallback(async () => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    try {
-      const supabase = getSupabase();
-      const { data, error } = await supabase
-        .from("guestbook")
-        .select("id, nickname, message, created_at")
-        .order("created_at", { ascending: false })
-        .range(entries.length, entries.length + PAGE_SIZE - 1);
-      if (error) {
-        console.error("Failed to fetch more guestbook:", error.message);
-      } else {
-        const newEntries = data ?? [];
-        setEntries((prev) => [...prev, ...newEntries]);
-        setHasMore(newEntries.length >= PAGE_SIZE);
-      }
-    } finally {
-      setLoadingMore(false);
-    }
-  }, [entries.length, hasMore, loadingMore]);
+  */
 
   useEffect(() => {
     fetchEntries();
-    const interval = setInterval(fetchEntries, 10000);
-    return () => clearInterval(interval);
   }, [fetchEntries]);
-
-  useEffect(() => {
-    const el = listRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 60) {
-        fetchMore();
-      }
-    };
-    el.addEventListener("scroll", handleScroll);
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, [fetchMore]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,6 +112,19 @@ export default function GuestbookSection() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+      {loading ? (
+        <div
+          style={{
+            padding: "40px 16px",
+            textAlign: "center",
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(0.85rem, 2.5vw, 1rem)",
+            color: "var(--ink-muted)",
+          }}
+        >
+          불러오는 중...
+        </div>
+      ) : <>
       <p
         style={{
           fontFamily: "var(--font-body)",
@@ -222,7 +207,7 @@ export default function GuestbookSection() {
 
       {/* Entries list */}
       <div style={{ position: "relative" }}>
-      <div ref={listRef} style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "480px", overflowY: "auto" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxHeight: "480px", overflowY: "auto" }}>
         <div
           style={{
             display: "flex",
@@ -369,6 +354,7 @@ export default function GuestbookSection() {
         onClose={() => { setDeleteTarget(null); setDeleteError(null); }}
         error={deleteError}
       />
+      </>}
     </div>
   );
 }
