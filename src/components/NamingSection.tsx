@@ -15,6 +15,7 @@ const RANK_COLORS = ["#e8352a", "#f47c20", "#f5c800"];
 export default function NamingSection() {
   const [entries, setEntries] = useState<NamingEntry[]>([]);
   const [title, setTitle] = useState("");
+  const [reason, setReason] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -27,7 +28,7 @@ export default function NamingSection() {
     const [entriesRes, statusRes] = await Promise.all([
       supabase
         .from("naming_entries")
-        .select("id, title, likes, created_at")
+        .select("id, title, reason, likes, created_at")
         .order("likes", { ascending: false }),
       supabase
         .from("vote_status")
@@ -59,9 +60,10 @@ export default function NamingSection() {
       const supabase = getSupabase();
       const { error } = await supabase
         .from("naming_entries")
-        .insert({ title: title.trim(), password: password.trim() });
+        .insert({ title: title.trim(), reason: reason.trim() || null, password: password.trim() });
       if (!error) {
         setTitle("");
+        setReason("");
         setPassword("");
         await fetchEntries();
       }
@@ -166,6 +168,14 @@ export default function NamingSection() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="공연 이름 (최대 30자)"
               maxLength={30}
+              className="open-input"
+            />
+            <input
+              type="text"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="제안 이유 (최대 50자)"
+              maxLength={50}
               className="open-input"
             />
             <input
@@ -293,6 +303,21 @@ export default function NamingSection() {
                         >
                           {entry.title}
                         </p>
+                        {entry.reason && (
+                          <p
+                            style={{
+                              fontSize: "0.8rem",
+                              color: "var(--ink-muted)",
+                              margin: "2px 0 0",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              fontFamily: "var(--font-body)",
+                            }}
+                          >
+                            {entry.reason}
+                          </p>
+                        )}
                       </div>
                     </div>
 

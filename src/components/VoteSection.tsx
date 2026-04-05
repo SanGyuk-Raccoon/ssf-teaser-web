@@ -5,10 +5,16 @@ import { TIERS } from "@/lib/data";
 import { getSupabase } from "@/lib/supabase";
 import { hasVotedTier, markVotedTier } from "@/lib/storage";
 
+const TIER_CRITERIA: Record<string, string> = {
+  "Rookie": "신입의 에너지를 보여줬나요?",
+  "YB": "동호회를 대표하는 실력이었나요?",
+  "OB": "경험과 관록이 느껴졌나요?",
+};
+
 const SCORE_GUIDES: Record<string, { 1: string; 3: string; 5: string }> = {
-  "Rookie": { 1: "파이팅하자!", 3: "크...옛날 생각난다.", 5: "으구 이뻐~ 뽀뽀 쪽~" },
-  "YB":  { 1: "YB 가이드 1점", 3: "YB 가이드 3점", 5: "YB 가이드 5점" },
-  "OB":  { 1: "OB 가이드 1점", 3: "OB 가이드 3점", 5: "OB 가이드 5점" },
+  "Rookie": { 1: "에너지가 조금 아쉬웠어요", 3: "신입다운 패기가 느껴졌어요", 5: "내 첫 무대가 떠오를 만큼 뜨거웠어요!" },
+  "YB": { 1: "실력 발휘가 아쉬웠어요", 3: "안정적인 합주력이 느껴졌어요", 5: "동호회의 간판, 완벽한 무대였어요!" },
+  "OB": { 1: "관록이 잘 드러나지 않았어요", 3: "경험에서 우러나는 여유가 있었어요", 5: "나도 저렇게 되고 싶다! 감동이었어요!" },
 };
 
 export default function VoteSection() {
@@ -124,6 +130,18 @@ export default function VoteSection() {
               </div>
             ) : isOpen ? (
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {/* Criteria */}
+                {TIER_CRITERIA[tier] && (
+                  <p style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "clamp(1rem, 3vw, 1.2rem)",
+                    color: "var(--ink-soft)",
+                    textAlign: "center",
+                    margin: "0 0 4px",
+                  }}>
+                    {TIER_CRITERIA[tier]}
+                  </p>
+                )}
                 {/* Discrete slider */}
                 <div style={{ padding: "8px 0" }}>
                   <div style={{ position: "relative", height: "40px", display: "flex", alignItems: "center" }}>
@@ -203,32 +221,27 @@ export default function VoteSection() {
                       </span>
                     ))}
                   </div>
-                  {/* Guide text */}
-                  {SCORE_GUIDES[tier] && (
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0 0", marginTop: "2px" }}>
-                      {[1, 3, 5].map((s) => {
-                        const nearest = score <= 0 ? 0 : score <= 2 ? 1 : score <= 4 ? 3 : 5;
-                        const active = nearest === s;
-                        return (
-                          <span
-                            key={s}
-                            style={{
-                              width: "33%",
-                              textAlign: s === 1 ? "left" : s === 5 ? "right" : "center",
-                              fontSize: active ? "0.8rem" : "0.7rem",
-                              fontFamily: "var(--font-body)",
-                              color: active ? "var(--ink)" : "var(--ink-muted)",
-                              fontWeight: active ? 700 : 400,
-                              lineHeight: 1.3,
-                              transition: "all 0.15s ease",
-                            }}
-                          >
-                            {SCORE_GUIDES[tier][s as 1 | 3 | 5]}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
+                  {/* Guide text - show on score select */}
+                  {SCORE_GUIDES[tier] && score > 0 && (() => {
+                    const nearest = score <= 2 ? 1 : score <= 4 ? 3 : 5;
+                    return (
+                      <div style={{
+                        textAlign: "center",
+                        padding: "8px 0 0",
+                        marginTop: "2px",
+                      }}>
+                        <span style={{
+                          fontSize: "clamp(0.8rem, 2.2vw, 0.95rem)",
+                          fontFamily: "var(--font-body)",
+                          color: "var(--ink-soft)",
+                          fontWeight: 500,
+                          lineHeight: 1.4,
+                        }}>
+                          {SCORE_GUIDES[tier][nearest as 1 | 3 | 5]}
+                        </span>
+                      </div>
+                    );
+                  })()}
                 </div>
                 <button
                   onClick={() => handleSubmitTier(tier)}

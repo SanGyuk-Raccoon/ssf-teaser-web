@@ -16,6 +16,7 @@ export interface Vote {
 export interface NamingEntry {
   id: number;
   title: string;
+  reason: string | null;
   likes: number;
   created_at: string;
 }
