@@ -42,7 +42,7 @@ export const teams: Team[] = [
     club: "Spectrum",
     tier: "YB",
     name: "Spectrum YB | 블루록",
-    description: "하드락을 기반으로한 비쥬얼훵크발라드메탈밴드.",
+    description: "하드락을 기반으로한\n비쥬얼훵크발라드메탈밴드.",
     imageUrl: "/블루록.webp",
     order: 5,
   },

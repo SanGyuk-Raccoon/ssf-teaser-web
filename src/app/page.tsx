@@ -225,7 +225,7 @@ export default function Home() {
               { time: "17:45", name: "블루록", sub: "Spectrum YB" },
               { time: "18:10", name: "RN'G", sub: "Starwars OB" },
               { time: "18:35", name: "unevens", sub: "Spectrum OB" },
-              { time: "19:00", name: "클로징 및 뒤풀이 이동", sub: "" },
+              { time: "19:00", name: "클로징", sub: "" },
             ].map((item, i, arr) => (
               <div
                 key={item.time}
@@ -304,12 +304,24 @@ export default function Home() {
                 <div
                   style={{
                     flex: 1,
-                    padding: "20px 0 20px 20px",
+                    padding: "16px 0 16px 20px",
                     display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
+                  {item.sub && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "clamp(0.65rem, 1.8vw, 0.8rem)",
+                        color: "var(--ink-muted)",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {item.sub}
+                    </span>
+                  )}
                   <span
                     style={{
                       fontFamily: "var(--font-body)",
@@ -320,20 +332,6 @@ export default function Home() {
                   >
                     {item.name}
                   </span>
-                  {item.sub && (
-                    <span
-                      style={{
-                        fontFamily: "var(--font-body)",
-                        fontSize: "clamp(0.75rem, 2vw, 0.9rem)",
-                        color: "var(--ink-muted)",
-                        textAlign: "right",
-                        flexShrink: 0,
-                        marginLeft: "12px",
-                      }}
-                    >
-                      {item.sub}
-                    </span>
-                  )}
                 </div>
               </div>
             ))}
