@@ -21,19 +21,6 @@ export default function GuestbookSection() {
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  // TODO: 테스트 후 원복 — 더미 데이터 1000개 + 10초 딜레이
-  const fetchEntries = useCallback(async () => {
-    await new Promise((r) => setTimeout(r, 10000));
-    const dummy = Array.from({ length: 1000 }, (_, i) => ({
-      id: 9000 + i,
-      nickname: `테스트유저${i + 1}`,
-      message: "가".repeat(100),
-      created_at: new Date(Date.now() - i * 60000).toISOString(),
-    }));
-    setEntries(dummy);
-    setLoading(false);
-  }, []);
-  /* 원본
   const fetchEntries = useCallback(async () => {
     const supabase = getSupabase();
     const { data, error } = await supabase
@@ -47,7 +34,6 @@ export default function GuestbookSection() {
     }
     setLoading(false);
   }, []);
-  */
 
   useEffect(() => {
     fetchEntries();
