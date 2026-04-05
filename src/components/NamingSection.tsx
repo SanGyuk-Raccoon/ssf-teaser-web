@@ -48,20 +48,33 @@ export default function NamingSection() {
 
   useEffect(() => {
     fetchEntries();
-    const interval = setInterval(fetchEntries, 5000);
+    const interval = setInterval(fetchEntries, 10000);
     return () => clearInterval(interval);
   }, [fetchEntries]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !password.trim() || submitting) return;
+    const duplicate = entries.some(
+      (e) => e.title.trim().toLowerCase() === title.trim().toLowerCase()
+    );
+    if (duplicate) {
+      alert("이미 등록된 이름입니다.");
+      return;
+    }
     setSubmitting(true);
     try {
       const supabase = getSupabase();
       const { error } = await supabase
         .from("naming_entries")
         .insert({ title: title.trim(), reason: reason.trim() || null, password: password.trim() });
-      if (!error) {
+      if (error) {
+        if (error.code === "23505") {
+          alert("이미 등록된 이름입니다.");
+        } else {
+          console.error("Failed to submit naming entry:", error.message);
+        }
+      } else {
         setTitle("");
         setReason("");
         setPassword("");
