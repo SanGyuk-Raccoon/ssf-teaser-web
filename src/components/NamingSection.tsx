@@ -9,6 +9,7 @@ import {
 } from "@/lib/storage";
 import type { NamingEntry } from "@/lib/types";
 import DeleteModal from "./DeleteModal";
+import { useToast } from "./Toast";
 
 const RANK_COLORS = ["#e8352a", "#f47c20", "#f5c800"];
 
@@ -21,7 +22,9 @@ export default function NamingSection() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
+  const showToast = useToast();
 
   const fetchEntries = useCallback(async () => {
     const supabase = getSupabase();
@@ -44,6 +47,7 @@ export default function NamingSection() {
     if (statusRes.data) {
       setIsOpen(statusRes.data.is_open);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -59,7 +63,7 @@ export default function NamingSection() {
       (e) => e.title.trim().toLowerCase() === title.trim().toLowerCase()
     );
     if (duplicate) {
-      alert("이미 등록된 이름입니다.");
+      showToast("이미 등록된 이름입니다.");
       return;
     }
     setSubmitting(true);
@@ -70,7 +74,7 @@ export default function NamingSection() {
         .insert({ title: title.trim(), reason: reason.trim() || null, password: password.trim() });
       if (error) {
         if (error.code === "23505") {
-          alert("이미 등록된 이름입니다.");
+          showToast("이미 등록된 이름입니다.");
         } else {
           console.error("Failed to submit naming entry:", error.message);
         }
@@ -136,7 +140,19 @@ export default function NamingSection() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
 
-      {isOpen ? (
+      {loading ? (
+        <div
+          style={{
+            padding: "40px 16px",
+            textAlign: "center",
+            fontFamily: "var(--font-body)",
+            fontSize: "clamp(0.85rem, 2.5vw, 1rem)",
+            color: "var(--ink-muted)",
+          }}
+        >
+          불러오는 중...
+        </div>
+      ) : isOpen ? (
         <>
           <p
             style={{
@@ -148,7 +164,8 @@ export default function NamingSection() {
               margin: 0,
             }}
           >
-            이 연합공연의 이름을 지어주세요!<br />
+            Spectrum과 Starwars의 첫 연합공연!<br />
+            이 특별한 무대의 이름을 지어주세요.<br />
             가장 많은 추천을 받은 이름에 선물을 드립니다.
           </p>
 

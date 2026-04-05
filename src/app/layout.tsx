@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ParallaxBg from "@/components/ParallaxBg";
 import ImagePreloader from "@/components/ImagePreloader";
+import Toast from "@/components/Toast";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ssf-teaser-web.vercel.app"),
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ImagePreloader>
           <ParallaxBg />
           <main>{children}</main>
+          <Toast />
         </ImagePreloader>
       </body>
     </html>
