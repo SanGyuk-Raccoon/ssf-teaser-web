@@ -14,7 +14,7 @@ interface FloatingItem {
 }
 
 const floatingItems: FloatingItem[] = [
-  { src: "/ssf-guitar.webp", width: "clamp(350px, 95vw, 900px)", top: "15%", left: "2%", speed: -0.05, opacity: 1, rotate: -15 },
+  { src: "/ssf-guitar.webp", width: "clamp(350px, 95vw, 900px)", top: "30%", left: "2%", speed: -0.05, opacity: 1, rotate: -15 },
   { src: "/ssf-mic.webp", width: "clamp(300px, 85vw, 700px)", top: "90%", left: "45%", speed: -0.2, opacity: 1, rotate: 10 },
 ];
 

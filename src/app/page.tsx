@@ -168,6 +168,7 @@ export default function Home() {
                               color: "var(--ink-muted)",
                               margin: 0,
                               lineHeight: 1.6,
+                              whiteSpace: "pre-line",
                             }}
                           >
                             {team.description}
@@ -184,6 +185,161 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* ── Timetable ──────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "0 24px 100px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <div
+          className="glass-panel"
+          style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
+        >
+          <div style={{ textAlign: "center", marginBottom: "40px" }}>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+                color: "var(--ink)",
+              }}
+            >
+              타임테이블
+            </h2>
+          </div>
+          <div
+            style={{
+              padding: "0",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0",
+            }}
+          >
+            {[
+              { time: "16:20", name: "오프닝", sub: "" },
+              { time: "16:30", name: "밍숭맹숭", sub: "Starwars Rookie" },
+              { time: "16:55", name: "호록호록", sub: "Spectrum Rookie" },
+              { time: "17:20", name: "BTSS", sub: "Starwars YB" },
+              { time: "17:45", name: "블루록", sub: "Spectrum YB" },
+              { time: "18:10", name: "RN'G", sub: "Starwars OB" },
+              { time: "18:35", name: "unevens", sub: "Spectrum OB" },
+              { time: "19:00", name: "클로징 및 뒤풀이 이동", sub: "" },
+            ].map((item, i, arr) => (
+              <div
+                key={item.time}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0",
+                }}
+              >
+                <div
+                  style={{
+                    width: "clamp(90px, 28vw, 140px)",
+                    flexShrink: 0,
+                    padding: "20px 0",
+                    textAlign: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(1.4rem, 4vw, 1.8rem)",
+                      fontWeight: 700,
+                      color: "var(--ink)",
+                    }}
+                  >
+                    {item.time}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    width: "20px",
+                    alignSelf: "stretch",
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                  }}
+                >
+                  {i < arr.length - 1 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        bottom: 0,
+                        left: "50%",
+                        width: "2px",
+                        background: "var(--ink-muted)",
+                        transform: "translateX(-50%)",
+                      }}
+                    />
+                  )}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      bottom: "50%",
+                      left: "50%",
+                      width: "2px",
+                      background: "var(--ink-muted)",
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50%",
+                      background: "var(--ink)",
+                      border: "2px solid var(--ink-muted)",
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    padding: "20px 0 20px 20px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "clamp(1.3rem, 4vw, 1.7rem)",
+                      fontWeight: 600,
+                      color: "var(--ink)",
+                    }}
+                  >
+                    {item.name}
+                  </span>
+                  {item.sub && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "clamp(0.75rem, 2vw, 0.9rem)",
+                        color: "var(--ink-muted)",
+                        textAlign: "right",
+                        flexShrink: 0,
+                        marginLeft: "12px",
+                      }}
+                    >
+                      {item.sub}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── Vote ───────────────────────────────────────────────── */}
       <section
