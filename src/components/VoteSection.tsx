@@ -78,7 +78,35 @@ export default function VoteSection() {
     }
   };
 
+  const allClosed = TIERS.length > 0
+    && Object.keys(status).length > 0
+    && TIERS.every((tier) => !status[tier]);
+
+  if (allClosed) return null;
+
   return (
+    <section
+      style={{
+        padding: "0 24px 100px",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        className="glass-panel"
+        style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
+              color: "var(--ink)",
+            }}
+          >
+            투표
+          </h2>
+        </div>
     <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       {TIERS.map((tier) => {
         const isOpen = status[tier] ?? false;
@@ -278,5 +306,7 @@ export default function VoteSection() {
         );
       })}
     </div>
+      </div>
+    </section>
   );
 }
