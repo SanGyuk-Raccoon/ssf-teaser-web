@@ -34,7 +34,7 @@ export const teams: Team[] = [
     tier: "Rookie",
     name: "Spectrum Rookie | 호록호록",
     description: "저희는 호록호록!\n음악은 결코 호락호락하지 않는 호기로운 록을 보여드리겠습니다!",
-    imageUrl: "/placeholder-team.svg",
+    imageUrl: "/호록호록.webp",
     order: 4,
   },
   {
