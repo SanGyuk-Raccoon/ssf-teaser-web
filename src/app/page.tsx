@@ -342,32 +342,8 @@ export default function Home() {
       {/* ── Vote (VoteSection returns null when all tiers closed) ─ */}
       <VoteSection />
 
-      {/* ── Naming ────────────────────────────────────────────────── */}
-      <section
-        style={{
-          padding: "0 24px 100px",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          className="glass-panel"
-          style={{ maxWidth: "600px", width: "100%", padding: "48px 32px" }}
-        >
-          <div style={{ textAlign: "center", marginBottom: "32px" }}>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(1.8rem, 5vw, 2.5rem)",
-                color: "var(--ink)",
-              }}
-            >
-              공연 이름 공모
-            </h2>
-          </div>
-          <NamingSection />
-        </div>
-      </section>
+      {/* ── Naming (NamingSection returns null when closed) ──────── */}
+      <NamingSection />
 
       {/* ── Guestbook ──────────────────────────────────────────────── */}
       <section
